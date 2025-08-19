@@ -1,0 +1,49 @@
+---
+layout: base.njk
+---
+
+<article class="item-detail">
+  <div class="item-hero">
+    {% if coverImage %}
+      {% safeImage "./src" + coverImage, title %}
+    {% endif %}
+    
+    <div class="item-meta">
+      <div class="item-meta-section">
+        <h3>Published</h3>
+        <p>{{ date | dateDisplay }}</p>
+      </div>
+      
+      {% if team.length > 0 %}
+      <div class="item-meta-section">
+        <h3>Team</h3>
+        <div class="item-team">
+          {% for member in team %}
+            <span class="team-member">{{ member }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      
+      {% if tags.length > 0 %}
+      <div class="item-meta-section">
+        <h3>Categories</h3>
+        <div class="item-tags">
+          {% for tag in tags %}
+            <span class="tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    
+    <h1 class="item-title">{{ title }}</h1>
+    {% if shortDescription %}
+      <p class="item-subtitle">{{ shortDescription }}</p>
+    {% endif %}
+  </div>
+
+  <div class="item-body">
+    {{ content | safe }}
+  </div>
+</article>

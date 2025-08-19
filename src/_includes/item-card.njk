@@ -1,0 +1,38 @@
+<article class="item-card" onclick="window.location.href='{{ item.url }}'">
+  {% if item.data.feedImages and item.data.feedImages.length > 0 %}
+  <div class="item-images">
+    <div class="image-carousel" data-carousel>
+      {% for image in item.data.feedImages %}
+        {% safeImage "./src" + image, item.data.title + " - Image " + loop.index %}
+      {% endfor %}
+    </div>
+    {% if item.data.feedImages.length > 1 %}
+    <div class="carousel-nav">
+      {% for image in item.data.feedImages %}
+        <button class="carousel-dot{% if loop.first %} active{% endif %}" 
+                data-slide="{{ loop.index0 }}" 
+                aria-label="Go to slide {{ loop.index }}"></button>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="item-content">
+    <h2 class="item-title">{{ item.data.title }}</h2>
+    
+    {% if item.data.team and item.data.team.length > 0 %}
+    <div class="item-team">
+      {% for member in item.data.team %}
+        <span class="team-member">{{ member }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if item.data.shortDescription %}
+    <div class="item-description">
+      {{ item.data.shortDescription }}
+    </div>
+    {% endif %}
+  </div>
+</article>

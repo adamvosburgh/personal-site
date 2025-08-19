@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if title %}{{ title }} - {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ description or site.description }}">
+  <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="main-nav">
+      <div class="nav-items">
+        <a href="/" class="nav-item{% if page.url == '/' %} active{% endif %}" data-description="Latest work and featured projects">
+          <span class="nav-text">Main</span>
+          <span class="nav-description mobile-visible">Latest work and featured projects</span>
+        </a>
+        <a href="/teaching/" class="nav-item{% if '/teaching/' in page.url %} active{% endif %}" data-description="Courses, workshops, and educational content">
+          <span class="nav-text">Teaching</span>
+          <span class="nav-description mobile-visible">Courses, workshops, and educational content</span>
+        </a>
+        <a href="/projects/" class="nav-item{% if '/projects/' in page.url %} active{% endif %}" data-description="Side projects and experimental work">
+          <span class="nav-text">Side Projects</span>
+          <span class="nav-description mobile-visible">Side projects and experimental work</span>
+        </a>
+        <a href="/about/" class="nav-item{% if '/about/' in page.url %} active{% endif %}" data-description="Background, experience, and personal info">
+          <span class="nav-text">About</span>
+          <span class="nav-description mobile-visible">Background, experience, and personal info</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    {{ content | safe }}
+  </main>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
