@@ -66,7 +66,8 @@ module.exports = function(eleventyConfig) {
     try {
       if (fs.existsSync(path.resolve(src))) {
         const webPath = src.replace('./src/', '/').replace('src/', '/');
-        return `<img src="${webPath}" alt="${alt}" class="carousel-image" loading="lazy">`;
+        const finalPath = pathPrefix + webPath;
+        return `<img src="${finalPath}" alt="${alt}" class="carousel-image" loading="lazy">`;
       } else {
         return `<div class="image-placeholder">
           <span>Missing: ${path.basename(src)}</span>
