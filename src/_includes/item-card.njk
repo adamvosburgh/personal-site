@@ -1,4 +1,4 @@
-<article class="item-card" onclick="window.location.href='{{ item.url }}'">
+<article class="item-card" onclick="window.location.href='{{ environment.baseUrl }}{{ item.url }}'">
   {% if item.data.feedImages and item.data.feedImages.length > 0 %}
   <div class="item-images">
     <div class="image-carousel" data-carousel>

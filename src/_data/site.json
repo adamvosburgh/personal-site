@@ -2,6 +2,7 @@
   "title": "Adam Vosburgh",
   "description": "Information about me, and some of my work",
   "url": "https://adamvosburgh.github.io/personal-site",
+  "baseUrl": "",
   "author": {
     "name": "Adam Vosburgh",
     "email": "adam (dot) vosburgh (at) gmail (dot) com"
