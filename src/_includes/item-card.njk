@@ -1,4 +1,10 @@
-<article class="item-card" onclick="window.location.href='{{ environment.baseUrl }}{{ item.url }}'">
+<article class="item-card item-description-tooltip" data-size="{{ item.data.size or 1 }}" data-tags="{{ item.data.tags | join(',') }}" {% if item.data.shortDescription %}data-description="{{ item.data.shortDescription }}"{% endif %} onclick="window.location.href='{{ environment.baseUrl }}{{ item.url }}'">
+  <div class="item-category">
+    {% for tag in item.data.tags %}
+      {% if tag != "main" %}{{ tag }}{% endif %}
+    {% endfor %}
+  </div>
+  
   {% if item.data.feedImages and item.data.feedImages.length > 0 %}
   <div class="item-images">
     <div class="image-carousel" data-carousel>
@@ -7,6 +13,8 @@
       {% endfor %}
     </div>
     {% if item.data.feedImages.length > 1 %}
+    <button class="carousel-arrow carousel-prev" aria-label="Previous image">‹</button>
+    <button class="carousel-arrow carousel-next" aria-label="Next image">›</button>
     <div class="carousel-nav">
       {% for image in item.data.feedImages %}
         <button class="carousel-dot{% if loop.first %} active{% endif %}" 
@@ -20,19 +28,5 @@
 
   <div class="item-content">
     <h2 class="item-title">{{ item.data.title }}</h2>
-    
-    {% if item.data.team and item.data.team.length > 0 %}
-    <div class="item-team">
-      {% for member in item.data.team %}
-        <span class="team-member">{{ member }}</span>
-      {% endfor %}
-    </div>
-    {% endif %}
-
-    {% if item.data.shortDescription %}
-    <div class="item-description">
-      {{ item.data.shortDescription }}
-    </div>
-    {% endif %}
   </div>
 </article>

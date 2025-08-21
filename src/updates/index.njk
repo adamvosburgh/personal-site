@@ -1,0 +1,11 @@
+---
+layout: base.njk
+title: "Updates"
+description: "News, updates, and announcements"
+---
+
+<div class="items-grid">
+  {% for item in collections.updateItems %}
+    {% include "item-card.njk" %}
+  {% endfor %}
+</div>

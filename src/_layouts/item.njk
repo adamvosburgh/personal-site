@@ -4,7 +4,26 @@ layout: base.njk
 
 <article class="item-detail">
   <div class="item-hero">
-    {% if coverImage %}
+    {% if images and images.length > 0 %}
+      <div class="item-images">
+        <div class="image-carousel" data-carousel>
+          {% for image in images %}
+            {% safeImage "./src" + image, title + " - Image " + loop.index %}
+          {% endfor %}
+        </div>
+        {% if images.length > 1 %}
+        <button class="carousel-arrow carousel-prev" aria-label="Previous image">‹</button>
+        <button class="carousel-arrow carousel-next" aria-label="Next image">›</button>
+        <div class="carousel-nav">
+          {% for image in images %}
+            <button class="carousel-dot{% if loop.first %} active{% endif %}" 
+                    data-slide="{{ loop.index0 }}" 
+                    aria-label="Go to slide {{ loop.index }}"></button>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    {% elif coverImage %}
       {% safeImage "./src" + coverImage, title %}
     {% endif %}
     

@@ -9,7 +9,7 @@ images:
 coverImage: 
 layout: "item.njk"
 size: 2
-order: 3
+order: 6
 ---
 
 *[Link to Course Site](methodsinspatialresearch.xyz)*

@@ -3,8 +3,10 @@ title: "About Me"
 shortDescription: "I work in the broad field of *computational design*, and I make work, help run a program, and teach courses within that field."
 date: 2025-08-18
 team: []
-tags: ["main","about"]
+tags: ["about"]
 layout: "item.njk"
+size: 1
+order: 1
 ---
 
 ## About Me

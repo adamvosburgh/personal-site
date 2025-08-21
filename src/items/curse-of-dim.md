@@ -1,6 +1,6 @@
 ---
-title: "Two Sides of the Same Coin"
-shortDescription: "A data visualization for the Milan Triennale that explores the interdependent relationship between humans, bacteria, and the built environment."
+title: "The Curse of Dimensionality"
+shortDescription: "Lorem Ipsum"
 date: 2025-05-15
 team: ["Laura Kurgan", "Dan Miller", "Adam Vosburgh"]
 tags: ["main", "projects"]
@@ -16,8 +16,8 @@ images:
   - "/images/two-sides/biome-close.jpg"
 coverImage: "/images/two-sides/anthrome-cover.jpg"
 layout: "item.njk"
-size: 3
-order: 2
+size: 2
+order: 4
 ---
 
 *This project was the receipient of 2025 Bee Award for Best Original Project*

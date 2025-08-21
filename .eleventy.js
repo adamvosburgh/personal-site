@@ -28,32 +28,38 @@ module.exports = function(eleventyConfig) {
   // Collections for different content types
   eleventyConfig.addCollection("allItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob("./src/items/*.md").sort((a, b) => {
-      return new Date(b.data.date) - new Date(a.data.date);
+      return (a.data.order || 999) - (b.data.order || 999);
     });
   });
   
   eleventyConfig.addCollection("mainItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob("./src/items/*.md")
       .filter(item => item.data.tags && item.data.tags.includes('main'))
-      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
   });
   
   eleventyConfig.addCollection("teachingItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob("./src/items/*.md")
       .filter(item => item.data.tags && item.data.tags.includes('teaching'))
-      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
   });
   
   eleventyConfig.addCollection("projectItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob("./src/items/*.md")
       .filter(item => item.data.tags && item.data.tags.includes('projects'))
-      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
   });
   
   eleventyConfig.addCollection("aboutItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob("./src/items/*.md")
       .filter(item => item.data.tags && item.data.tags.includes('about'))
-      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+  });
+  
+  eleventyConfig.addCollection("updateItems", function(collectionApi) {
+    return collectionApi.getFilteredByGlob("./src/items/*.md")
+      .filter(item => item.data.tags && item.data.tags.includes('updates'))
+      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
   });
 
   // Image shortcode with fallback to placeholder

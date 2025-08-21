@@ -17,7 +17,7 @@ images:
 coverImage: "/images/two-sides/anthrome-cover.jpg"
 layout: "item.njk"
 size: 3
-order: 2
+order: 7
 ---
 
 *This project was the receipient of 2025 Bee Award for Best Original Project*

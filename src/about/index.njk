@@ -4,13 +4,11 @@ title: "About"
 description: "Background, experience, and personal info"
 ---
 
-<div class="page-header">
-  <h1 class="page-title">About</h1>
-  <p class="page-description">Background, experience, and personal info</p>
-</div>
-
-<div class="items-grid">
-  {% for item in collections.aboutItems %}
-    {% include "item-card.njk" %}
-  {% endfor %}
-</div>
+{% for item in collections.aboutItems %}
+<article class="item-detail">
+  <div class="item-body">
+    <h1>{{ item.data.title }}</h1>
+    {{ item.content | safe }}
+  </div>
+</article>
+{% endfor %}
