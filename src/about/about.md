@@ -7,6 +7,7 @@ tags: ["about"]
 layout: "item.njk"
 size: 1
 order: 1
+permalink: "/about-me/"
 ---
 
 ## About Me

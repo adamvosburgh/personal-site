@@ -26,39 +26,37 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("./src/assets/");
   
   // Collections for different content types
+  const contentGlob = ["./src/teaching/*.md", "./src/projects/*.md", "./src/updates/*.md", "./src/about/*.md"];
+  
   eleventyConfig.addCollection("allItems", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("./src/items/*.md").sort((a, b) => {
+    return collectionApi.getFilteredByGlob(contentGlob).sort((a, b) => {
       return (a.data.order || 999) - (b.data.order || 999);
     });
   });
   
   eleventyConfig.addCollection("mainItems", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("./src/items/*.md")
+    return collectionApi.getFilteredByGlob(contentGlob)
       .filter(item => item.data.tags && item.data.tags.includes('main'))
       .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
   });
   
   eleventyConfig.addCollection("teachingItems", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("./src/items/*.md")
-      .filter(item => item.data.tags && item.data.tags.includes('teaching'))
+    return collectionApi.getFilteredByGlob("./src/teaching/*.md")
       .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
   });
   
   eleventyConfig.addCollection("projectItems", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("./src/items/*.md")
-      .filter(item => item.data.tags && item.data.tags.includes('projects'))
+    return collectionApi.getFilteredByGlob("./src/projects/*.md")
       .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
   });
   
   eleventyConfig.addCollection("aboutItems", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("./src/items/*.md")
-      .filter(item => item.data.tags && item.data.tags.includes('about'))
+    return collectionApi.getFilteredByGlob("./src/about/*.md")
       .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
   });
   
   eleventyConfig.addCollection("updateItems", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("./src/items/*.md")
-      .filter(item => item.data.tags && item.data.tags.includes('updates'))
+    return collectionApi.getFilteredByGlob("./src/updates/*.md")
       .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
   });
 
