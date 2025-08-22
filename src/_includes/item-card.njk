@@ -7,21 +7,17 @@
   
   {% if item.data.feedImages and item.data.feedImages.length > 0 %}
   <div class="item-images">
-    <div class="image-carousel" data-carousel>
-      {% for image in item.data.feedImages %}
-        {% safeImage "./src" + image, item.data.title + " - Image " + loop.index %}
-      {% endfor %}
-    </div>
-    {% if item.data.feedImages.length > 1 %}
-    <button class="carousel-arrow carousel-prev" aria-label="Previous image">‹</button>
-    <button class="carousel-arrow carousel-next" aria-label="Next image">›</button>
-    <div class="carousel-nav">
-      {% for image in item.data.feedImages %}
-        <button class="carousel-dot{% if loop.first %} active{% endif %}" 
-                data-slide="{{ loop.index0 }}" 
-                aria-label="Go to slide {{ loop.index }}"></button>
-      {% endfor %}
-    </div>
+    {% safeImage "./src" + item.data.feedImages[0], item.data.title %}
+  </div>
+  {% elif item.data.link %}
+  <div class="item-link-preview">
+    {% if "youtube.com" in item.data.link or "youtu.be" in item.data.link %}
+      {% set videoId = item.data.link | replace("https://www.youtube.com/watch?v=", "") | replace("https://youtu.be/", "") | replace("&.*", "") %}
+      <iframe src="https://www.youtube.com/embed/{{ videoId }}?autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
+    {% elif "drive.google.com" in item.data.link %}
+      <iframe src="{{ item.data.link }}" frameborder="0"></iframe>
+    {% else %}
+      <iframe src="{{ item.data.link }}" frameborder="0"></iframe>
     {% endif %}
   </div>
   {% endif %}

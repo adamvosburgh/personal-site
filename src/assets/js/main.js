@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   initCarousels();
   initTooltips();
+  initCursorShadows();
 });
 
 function initCarousels() {
@@ -94,6 +95,50 @@ function initTooltips() {
     trigger.addEventListener('mouseleave', () => {
       tooltip.style.opacity = '0';
     });
+  });
+}
+
+// Cursor-based shadow direction
+function initCursorShadows() {
+  const cards = document.querySelectorAll('.item-card');
+  const nav = document.querySelector('.main-nav');
+  
+  document.addEventListener('mousemove', (e) => {
+    // Update card shadows
+    cards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const cardCenterX = rect.left + rect.width / 2;
+      const cardCenterY = rect.top + rect.height / 2;
+      
+      // Calculate cursor position relative to card center
+      const deltaX = e.clientX - cardCenterX;
+      const deltaY = e.clientY - cardCenterY;
+      
+      // Normalize and create shadow offset (opposite direction)
+      const shadowX = -deltaX * 0.025;
+      const shadowY = -deltaY * 0.025;
+      
+      // Apply dynamic shadow
+      card.style.boxShadow = `${shadowX}px ${shadowY}px 30px 10px rgba(0, 0, 0, 0.15), 0 0 20px 5px inset rgba(0, 0, 0, 0.15)`;
+    });
+    
+    // Update nav shadow
+    if (nav) {
+      const navRect = nav.getBoundingClientRect();
+      const navCenterX = navRect.left + navRect.width / 2;
+      const navCenterY = navRect.top + navRect.height / 2;
+      
+      // Calculate cursor position relative to nav center
+      const navDeltaX = e.clientX - navCenterX;
+      const navDeltaY = e.clientY - navCenterY;
+      
+      // Normalize and create shadow offset (opposite direction)
+      const navShadowX = -navDeltaX * 0.025;
+      const navShadowY = -navDeltaY * 0.025;
+      
+      // Apply dynamic shadow
+      nav.style.boxShadow = `${navShadowX}px ${navShadowY}px 30px 10px rgba(0, 0, 0, 0.15), 0 0 20px 5px inset rgba(0, 0, 0, 0.15)`;
+    }
   });
 }
 

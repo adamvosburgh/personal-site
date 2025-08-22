@@ -38,7 +38,7 @@ body {
 /* Navigation */
 .main-nav {
   position: fixed;
-  top: 5vh;
+  top: var(--grid-unit-y);
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
@@ -46,6 +46,7 @@ body {
   border-radius: 50px;
   padding: 0.5rem 1rem;
   width: fit-content;
+  box-shadow: 0 0 30px 30px rgba(0, 0, 0, 0.15), 0 0 20px 5px inset rgba(0, 0, 0, 0.15);
 }
 
 .nav-items {
@@ -116,21 +117,14 @@ body {
   }
 
   .mobile-visible {
-    display: block !important;
-    color: #555;
-    font-style: italic;
-    font-size: 0.875rem;
-    background: #fefdf8;
-    padding: 0.5rem;
-    border: 1px solid #666;
-    margin-top: 0.5rem;
+    display: none !important;
   }
 }
 
 /* Main content */
 .site-main {
-  padding: var(--grid-unit);
-  padding-top: calc(var(--grid-unit) * var(--gap-multiplier));
+  padding: var(--grid-unit-x);
+  padding-top: calc(var(--grid-unit-y) * 2);
 }
 
 @media (max-width: 767px) {
@@ -142,24 +136,24 @@ body {
 }
 
 :root {
-  --grid-unit: 5vw;
-  --gap-multiplier: 1.5;
+  --grid-unit-x: 5vw;
+  --grid-unit-y: 10vh;
+  --gap-multiplier: .5;
   --size-1-multiplier: 1;
   --size-2-multiplier: 2;
   --size-3-multiplier: 3;
-  --base-transform: 0.5vw;
 }
 
 /* Item grid - Masonry with scattered positioning */
 .items-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, var(--grid-unit));
-  grid-auto-rows: var(--grid-unit);
-  gap: calc(var(--grid-unit) * var(--gap-multiplier));
+  grid-template-columns: repeat(auto-fit, var(--grid-unit-x));
+  grid-auto-rows: var(--grid-unit-y);
+  gap: calc(var(--grid-unit-x) * var(--gap-multiplier)) calc(var(--grid-unit-y) * var(--gap-multiplier));
   width: 100%;
   grid-auto-flow: dense;
-  justify-content: center; /* justify-content: flex-start|flex-end|center|space-between|space-around|space-evenly|initial|inherit;*/
-  padding: 0 calc(var(--grid-unit) * var(--gap-multiplier));
+  justify-content: center;
+  padding: 0 calc(var(--grid-unit-x) * var(--gap-multiplier) * 2);
 }
 
 /* Item card base */
@@ -171,7 +165,8 @@ body {
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  border: 1px dotted #000;
+  border-radius: 12px;
+  box-shadow: 0 0 30px 30px rgba(0, 0, 0, 0.15), 0 0 20px 5px inset rgba(0, 0, 0, 0.15);
 }
 
 /* Category label styling */
@@ -186,25 +181,13 @@ body {
   width: fit-content;
 }
 
-/* Category-specific colors for text and borders */
-.item-card[data-tags*="projects"] {
-  border-color: rgb(0, 0, 255);
-}
-
+/* Category-specific colors for text */
 .item-card[data-tags*="projects"] .item-category {
   color: rgb(0, 0, 255);
 }
 
-.item-card[data-tags*="teaching"] {
-  border-color: rgb(0, 128, 0);
-}
-
 .item-card[data-tags*="teaching"] .item-category {
   color: rgb(0, 128, 0);
-}
-
-.item-card[data-tags*="updates"] {
-  border-color: rgb(64, 64, 64);
 }
 
 .item-card[data-tags*="updates"] .item-category {
@@ -232,22 +215,6 @@ body {
   grid-row: span var(--size-3-multiplier);
 }
 
-/* Scattered positioning - adjustable offsets using base-transform multipliers */
-.item-card:nth-child(3n+1) {
-  transform: translateX(calc(var(--base-transform) * 2));
-}
-
-.item-card:nth-child(5n+2) {
-  transform: translateX(calc(var(--base-transform) * -2));
-}
-
-.item-card:nth-child(7n+3) {
-  transform: translateX(calc(var(--base-transform) * 4));
-}
-
-.item-card:nth-child(11n+4) {
-  transform: translateX(calc(var(--base-transform) * -1));
-}
 
 .item-card:hover {
   background: #fafafa;
@@ -262,6 +229,20 @@ body {
   padding: 0.5rem;
 }
 
+.item-link-preview {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+}
+
+.item-link-preview iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
 .image-carousel {
   display: flex;
   transition: transform 0.3s ease;
@@ -274,6 +255,12 @@ body {
   object-fit: cover;
   flex-shrink: 0;
   display: block;
+}
+
+.carousel-image video {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .carousel-arrow {
@@ -425,9 +412,22 @@ body {
 
 /* Individual item page */
 .item-detail {
-  max-width: 50%;
+  max-width: min(90vw, 800px);
   margin: 0 auto;
   padding: 2rem;
+}
+
+@media (min-width: 1200px) {
+  .item-detail {
+    max-width: 50vw;
+  }
+}
+
+@media (max-width: 767px) {
+  .item-detail {
+    max-width: 95vw;
+    padding: 1rem;
+  }
 }
 
 .item-hero {
@@ -437,14 +437,14 @@ body {
 .item-hero img,
 .item-hero .carousel-image {
   width: 100%;
-  height: 30vh;
+  height: 50vh;
   object-fit: contain;
   margin-bottom: 2rem;
 }
 
 .item-hero-image {
   width: 100%;
-  height: 30vh;
+  height: 50vh;
   object-fit: contain;
   margin-bottom: 2rem;
 }

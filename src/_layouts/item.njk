@@ -8,7 +8,14 @@ layout: base.njk
       <div class="item-images">
         <div class="image-carousel" data-carousel>
           {% for image in images %}
-            {% safeImage "./src" + image, title + " - Image " + loop.index %}
+            {% if image.endsWith('.mp4') or image.endsWith('.webm') or image.endsWith('.mov') %}
+              <video class="carousel-image" controls>
+                <source src="{{ environment.baseUrl }}{{ image }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            {% else %}
+              {% safeImage "./src" + image, title + " - Image " + loop.index %}
+            {% endif %}
           {% endfor %}
         </div>
         {% if images.length > 1 %}
