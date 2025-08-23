@@ -1,6 +1,14 @@
 <div class="list-item item-description-tooltip" 
      data-description="{{ item.data.shortDescription }}"
-     data-cover-image="{% if item.data.coverImage %}{{ environment.baseUrl }}{{ item.data.coverImage }}{% elif item.data.feedImages and item.data.feedImages.length > 0 %}{{ environment.baseUrl }}{{ item.data.feedImages[0] }}{% endif %}"
+     data-cover-image="{% if item.data.coverImage %}{{ environment.baseUrl }}{{ item.data.coverImage }}{% endif %}"
+     data-category="{{ item.data.tags[0] if item.data.tags }}"
      onclick="window.location.href='{{ environment.baseUrl }}{{ item.url }}'">
   <div class="list-item-title">{{ item.data.title }}</div>
+  {% if item.data.tags %}
+    <div class="list-item-tags">
+      {% for tag in item.data.tags %}
+        <span class="tag-pill" data-tag="{{ tag }}">{{ tag }}</span>
+      {% endfor %}
+    </div>
+  {% endif %}
 </div>

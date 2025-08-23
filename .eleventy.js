@@ -30,34 +30,34 @@ module.exports = function(eleventyConfig) {
   
   eleventyConfig.addCollection("allItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob(contentGlob).sort((a, b) => {
-      return (a.data.order || 999) - (b.data.order || 999);
+      return new Date(b.data.date) - new Date(a.data.date); // Most recent first
     });
   });
   
   eleventyConfig.addCollection("mainItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob(contentGlob)
       .filter(item => item.data.tags && item.data.tags.includes('main'))
-      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date)); // Most recent first
   });
   
   eleventyConfig.addCollection("teachingItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob("./src/teaching/*.md")
-      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date)); // Most recent first
   });
   
   eleventyConfig.addCollection("projectItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob("./src/projects/*.md")
-      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date)); // Most recent first
   });
   
   eleventyConfig.addCollection("aboutItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob("./src/about/*.md")
-      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date)); // Most recent first
   });
   
   eleventyConfig.addCollection("updateItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob("./src/updates/*.md")
-      .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+      .sort((a, b) => new Date(b.data.date) - new Date(a.data.date)); // Most recent first
   });
 
   // Image shortcode with fallback to placeholder

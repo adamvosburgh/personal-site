@@ -4,9 +4,6 @@ shortDescription: "A data visualization for the Milan Triennale that explores th
 date: 2025-05-15
 team: ["Laura Kurgan", "Dan Miller", "Adam Vosburgh"]
 tags: ["main", "projects"]
-feedImages: 
-  - "/images/two-sides/anthrome-cover.jpg"
-  - "/images/two-sides/biome-cover.jpg"
 images:
   - "/images/two-sides/anthrome-cover.jpg"
   - "/images/two-sides/biome-cover.jpg"
@@ -14,10 +11,15 @@ images:
   - "/images/two-sides/biome-mid.jpg"
   - "/images/two-sides/anthrome-close.jpg"
   - "/images/two-sides/biome-close.jpg"
-coverImage: "/images/two-sides/anthrome-cover.jpg"
+display:
+  coverImage: "/images/two-sides/anthrome-cover.jpg"        # Single image for cards
+  slideshowImages:                               # Multiple images for slideshow
+    - "/images/two-sides/anthrome-cover.jpg"
+    - "/images/two-sides/biome-cover.jpg"
+  showInSlideshow: true      
+link: "https://vimeo.com/1084762935"
 layout: "item.njk"
 size: 3
-order: 2
 ---
 
 *This project was the receipient of 2025 Bee Award for Best Original Project*

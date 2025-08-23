@@ -1,20 +1,15 @@
 ---
-title: "Methods in Spatial Research"
+title: "Methods in Spatial Research 2024"
 shortDescription: "Seminar taught in Columbia GSAPP's Computation Sequence."
-date: 2025-03-31
+date: 2024-03-01
 team: ["Adam Vosburgh"]
-tags: ["main","teaching"]
-feedImages: 
-images:
-coverImage: 
+tags: ["teaching"]
 layout: "item.njk"
-size: 3
-link: https://methodsinspatialresearch.xyz/
-linkExternal: true
 display:
-    slideshowLinks:
-      - https://methodsinspatialresearch.xyz/
-    showInSlideshow: False
+  coverImage: "/images/methods/methods-2024.png"
+link: https://www.arch.columbia.edu/courses/11700-4631
+linkExternal: true
+size: 1
 ---
 
 *[Link to Course Site](methodsinspatialresearch.xyz)*

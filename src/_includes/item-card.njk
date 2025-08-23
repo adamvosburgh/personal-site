@@ -1,13 +1,17 @@
-<article class="item-card item-description-tooltip" data-size="{{ item.data.size or 1 }}" data-tags="{{ item.data.tags | join(',') }}" {% if item.data.shortDescription %}data-description="{{ item.data.shortDescription }}"{% endif %} onclick="window.location.href='{{ environment.baseUrl }}{{ item.url }}'">
+<article class="item-card item-description-tooltip{% if item.data.linkExternal %} external-link{% endif %}" data-size="{{ item.data.size or 1 }}" data-tags="{{ item.data.tags | join(',') }}" {% if item.data.shortDescription %}data-description="{{ item.data.shortDescription }}"{% endif %} onclick="{% if item.data.linkExternal and item.data.link %}window.open('{{ item.data.link }}', '_blank'){% else %}openModal('{{ environment.baseUrl }}{{ item.url }}'){% endif %}">
   <div class="item-category">
     {% for tag in item.data.tags %}
       {% if tag != "main" %}{{ tag }}{% endif %}
     {% endfor %}
   </div>
   
-  {% if item.data.feedImages and item.data.feedImages.length > 0 %}
+  {% if item.data.display and item.data.display.coverImage %}
   <div class="item-images">
-    {% safeImage "./src" + item.data.feedImages[0], item.data.title %}
+    {% safeImage "./src" + item.data.display.coverImage, item.data.title %}
+  </div>
+  {% elif item.data.coverImage %}
+  <div class="item-images">
+    {% safeImage "./src" + item.data.coverImage, item.data.title %}
   </div>
   {% elif item.data.link %}
   <div class="item-link-preview">

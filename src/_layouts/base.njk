@@ -5,11 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if title %}{{ title }} - {% endif %}{{ site.title }}</title>
   <meta name="description" content="{{ description or site.description }}">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Sono:wght@200..800&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="{{ environment.baseUrl }}/assets/css/main.css">
 </head>
 <body>
   <header class="site-header">
     <h1 class="site-title">{{ site.title }}</h1>
+    <div class="view-toggle">
+      <button class="view-btn" data-view="gallery" id="gallery-btn">Gallery</button>
+      <button class="view-btn" data-view="list" id="list-btn">List</button>
+    </div>
   </header>
 
   <nav class="main-nav">
@@ -38,10 +48,73 @@
   </nav>
 
   <main class="site-main">
-    {{ content | safe }}
+    <div class="gallery-view-content">
+      {{ content | safe }}
+    </div>
+    <div class="list-view-content">
+      <div class="list-layout">
+        <div class="list-sidebar">
+          <nav class="list-nav">
+            <div class="nav-items">
+              <a href="{{ environment.baseUrl }}/" class="nav-item{% if page.url == '/' %} active{% endif %}" data-filter="main">Main</a>
+              <a href="{{ environment.baseUrl }}/teaching/" class="nav-item{% if '/teaching/' in page.url %} active{% endif %}" data-filter="teaching">Teaching</a>
+              <a href="{{ environment.baseUrl }}/projects/" class="nav-item{% if '/projects/' in page.url %} active{% endif %}" data-filter="projects">Projects</a>
+              <a href="{{ environment.baseUrl }}/updates/" class="nav-item{% if '/updates/' in page.url %} active{% endif %}" data-filter="updates">Updates</a>
+              <a href="{{ environment.baseUrl }}/about/" class="nav-item{% if '/about/' in page.url %} active{% endif %}" data-filter="about">About</a>
+            </div>
+          </nav>
+          <div class="list-items" id="list-items">
+            <!-- Items will be populated by JavaScript -->
+          </div>
+        </div>
+        <div class="list-preview">
+          <div class="preview-carousel" id="preview-carousel">
+            <!-- Carousel images will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
+  <!-- Modal for item content -->
+  <div id="item-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div class="modal-body" id="modal-body">
+        <!-- Content will be loaded here -->
+      </div>
+    </div>
+  </div>
 
+  <script>
+    // Make all items data available to JavaScript
+    window.siteData = {
+      allItems: [
+        {% for item in collections.allItems %}
+        {
+          title: {{ item.data.title | dump | safe }},
+          tags: {{ item.data.tags | dump | safe }},
+          description: {{ item.data.shortDescription | dump | safe }},
+          url: "{{ environment.baseUrl }}{{ item.url }}",
+          coverImage: {% if item.data.display and item.data.display.coverImage %}"{{ environment.baseUrl }}{{ item.data.display.coverImage }}"{% elif item.data.coverImage %}"{{ environment.baseUrl }}{{ item.data.coverImage }}"{% else %}""{% endif %},
+          link: {% if item.data.link %}"{{ item.data.link }}"{% else %}""{% endif %},
+          linkExternal: {% if item.data.linkExternal %}{{ item.data.linkExternal }}{% else %}false{% endif %},
+          showInSlideshow: {% if item.data.display and item.data.display.showInSlideshow %}{{ item.data.display.showInSlideshow }}{% else %}false{% endif %},
+          slideshowImages: [
+            {% if item.data.display and item.data.display.slideshowImages %}
+              {% for img in item.data.display.slideshowImages %}"{{ environment.baseUrl }}{{ img }}"{% if not loop.last %},{% endif %}{% endfor %}
+            {% endif %}
+          ],
+          slideshowLinks: [
+            {% if item.data.display and item.data.display.slideshowLinks %}
+              {% for link in item.data.display.slideshowLinks %}"{{ link }}"{% if not loop.last %},{% endif %}{% endfor %}
+            {% endif %}
+          ]
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    };
+  </script>
   <script src="{{ environment.baseUrl }}/assets/js/main.js"></script>
 </body>
 </html>

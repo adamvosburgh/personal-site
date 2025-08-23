@@ -1,23 +1,21 @@
 ---
 title: "The Curse of Dimensionality"
 shortDescription: "Lorem Ipsum"
-date: 2025-05-15
-team: ["Laura Kurgan", "Dan Miller", "Adam Vosburgh"]
+date: 2025-04-15
+team: ["Adeline Chum", "Michael Krisch", "Laura Kurgan", "Adam Vosburgh", "Jia Zhang"]
 tags: ["main", "projects"]
-feedImages: 
-  - "/images/two-sides/anthrome-cover.jpg"
-  - "/images/two-sides/biome-cover.jpg"
 images:
-  - "/images/two-sides/anthrome-cover.jpg"
-  - "/images/two-sides/biome-cover.jpg"
-  - "/images/two-sides/anthrome-mid.jpg"
-  - "/images/two-sides/biome-mid.jpg"
-  - "/images/two-sides/anthrome-close.jpg"
-  - "/images/two-sides/biome-close.jpg"
-coverImage: "/images/two-sides/anthrome-cover.jpg"
+  - "/images/curse-of-dim/installation-pic.jpg"
+  - "/images/curse-of-dim/still-danger.jpg"
+  - "/images/curse-of-dim/installation-grid.jpg"
+  - "/images/curse-of-dim/still-fb-intro.jpg"
+display:
+  coverImage: "/images/curse-of-dim/installation-pic.jpg"       # Single image for cards
+  slideshowImages:                               # Multiple images for slideshow
+    - "/images/curse-of-dim/installation-pic.jpg"
+  showInSlideshow: true    
 layout: "item.njk"
-size: 2
-order: 4
+size: 3
 ---
 
 *This project was the receipient of 2025 Bee Award for Best Original Project*
