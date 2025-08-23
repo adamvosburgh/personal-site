@@ -9,7 +9,7 @@ display:
   coverImage: "/images/methods/methods-2023.png"
 link: https://www.arch.columbia.edu/courses/11410-4119
 linkExternal: true
-size: 1
+size: 2
 ---
 
 *[Link to Course Site](www.methodsinspatialresearch.xyz)*

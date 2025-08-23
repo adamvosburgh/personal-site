@@ -6,15 +6,15 @@ team: ["Adam Vosburgh"]
 tags: ["main","teaching"]
 feedImages: 
 images:
-coverImage: 
+coverImage: /images/methods/methods.png
 layout: "item.njk"
-size: 3
+size: 2
 link: https://methodsinspatialresearch.xyz/
 linkExternal: true
-display:
-    slideshowLinks:
-      - https://methodsinspatialresearch.xyz/
-    showInSlideshow: False
+# display:
+#    slideshowLinks:
+#      - https://methodsinspatialresearch.xyz/
+#    showInSlideshow: False
 ---
 
 *[Link to Course Site](methodsinspatialresearch.xyz)*

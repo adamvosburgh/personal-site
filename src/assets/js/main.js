@@ -1,13 +1,40 @@
 // Image carousel functionality
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 DOM Content Loaded - initializing');
   initCarousels();
   initTooltips();
-  initCursorShadows();
   initViewToggle();
   initListView();
   initModal();
+  initGalleryView();
   
-  // Handle browser back/forward buttons
+  // Better gallery page load transition
+  const itemsGrid = document.querySelector('.items-grid');
+  if (itemsGrid && document.body.classList.contains('gallery-view')) {
+    console.log('📄 Setting up gallery page load transition');
+    
+    // Start with content hidden
+    itemsGrid.style.opacity = '0';
+    itemsGrid.style.transition = 'none';
+    
+    // Small delay then fade in smoothly  
+    setTimeout(() => {
+      itemsGrid.style.transition = 'opacity 0.4s ease';
+      itemsGrid.style.opacity = '1';
+      console.log('✅ Gallery page loaded and faded in');
+    }, 100);
+  }
+  
+  // Log any additional page events that might be causing double loading
+  window.addEventListener('beforeunload', () => {
+    console.log('⚡ Page beforeunload event');
+  });
+  
+  window.addEventListener('load', () => {
+    console.log('📋 Window load event');
+  });
+  
+  // Handle browser back/forward buttons (only for list view)
   window.addEventListener('popstate', (e) => {
     if (e.state && e.state.filter && document.body.classList.contains('list-view')) {
       setActiveFilter(e.state.filter);
@@ -109,49 +136,6 @@ function initTooltips() {
   });
 }
 
-// Cursor-based shadow direction
-function initCursorShadows() {
-  const cards = document.querySelectorAll('.item-card');
-  const nav = document.querySelector('.main-nav');
-  
-  document.addEventListener('mousemove', (e) => {
-    // Update card shadows
-    cards.forEach(card => {
-      const rect = card.getBoundingClientRect();
-      const cardCenterX = rect.left + rect.width / 2;
-      const cardCenterY = rect.top + rect.height / 2;
-      
-      // Calculate cursor position relative to card center
-      const deltaX = e.clientX - cardCenterX;
-      const deltaY = e.clientY - cardCenterY;
-      
-      // Normalize and create shadow offset (opposite direction)
-      const shadowX = -deltaX * 0.025;
-      const shadowY = -deltaY * 0.025;
-      
-      // Apply dynamic shadow
-      card.style.boxShadow = `${shadowX}px ${shadowY}px 30px 10px rgba(0, 0, 0, 0.15), 0 0 20px 5px inset rgba(0, 0, 0, 0.15)`;
-    });
-    
-    // Update nav shadow
-    if (nav) {
-      const navRect = nav.getBoundingClientRect();
-      const navCenterX = navRect.left + navRect.width / 2;
-      const navCenterY = navRect.top + navRect.height / 2;
-      
-      // Calculate cursor position relative to nav center
-      const navDeltaX = e.clientX - navCenterX;
-      const navDeltaY = e.clientY - navCenterY;
-      
-      // Normalize and create shadow offset (opposite direction)
-      const navShadowX = -navDeltaX * 0.025;
-      const navShadowY = -navDeltaY * 0.025;
-      
-      // Apply dynamic shadow
-      nav.style.boxShadow = `${navShadowX}px ${navShadowY}px 30px 10px rgba(0, 0, 0, 0.15), 0 0 20px 5px inset rgba(0, 0, 0, 0.15)`;
-    }
-  });
-}
 
 // View toggle functionality
 function initViewToggle() {
@@ -191,6 +175,7 @@ function initViewToggle() {
       galleryBtn.classList.add('active');
       if (listBtn) listBtn.classList.remove('active');
       localStorage.setItem('preferredView', 'gallery');
+      
     });
   }
   
@@ -314,22 +299,43 @@ function setActiveFilter(filter) {
 }
 
 function filterListItems(filter) {
-  let filteredItems = [];
+  const listItemsContainer = document.getElementById('list-items');
+  if (!listItemsContainer) return;
   
-  if (filter === 'main') {
-    // Show items tagged with 'main'
-    filteredItems = allItems.filter(item => 
-      item.tags && item.tags.includes('main')
-    );
-  } else {
-    // Show items with the specific tag (teaching, projects, updates, about)
-    filteredItems = allItems.filter(item => 
-      item.tags && item.tags.includes(filter)
-    );
-  }
+  // Add fade-out animation
+  listItemsContainer.classList.add('fade-out');
   
-  renderListItems(filteredItems);
-  // Note: NOT calling startPreviewCarousel here - global slideshow is independent
+  setTimeout(() => {
+    if (filter === 'about') {
+      // Special case for about: render about content instead of items list
+      renderAboutContent();
+    } else {
+      let filteredItems = [];
+      
+      if (filter === 'main') {
+        // Show items tagged with 'main'
+        filteredItems = allItems.filter(item => 
+          item.tags && item.tags.includes('main')
+        );
+      } else {
+        // Show items with the specific tag (teaching, projects, updates)
+        filteredItems = allItems.filter(item => 
+          item.tags && item.tags.includes(filter)
+        );
+      }
+      
+      renderListItems(filteredItems);
+    }
+    
+    // Remove fade-out and add fade-in
+    listItemsContainer.classList.remove('fade-out');
+    listItemsContainer.classList.add('fade-in');
+    
+    // Remove fade-in class after animation completes
+    setTimeout(() => {
+      listItemsContainer.classList.remove('fade-in');
+    }, 600);
+  }, 150);
 }
 
 // Global slideshow - independent of feed filtering
@@ -584,6 +590,31 @@ function showLinkEmbed(linkUrl, title, itemUrl, isExternal = false) {
   previewCarousel.appendChild(embedDiv);
 }
 
+function renderAboutContent() {
+  const listItemsContainer = document.getElementById('list-items');
+  if (!listItemsContainer) return;
+  
+  // Fetch the about page content and render it
+  const baseUrl = window.location.origin + (window.location.pathname.includes('/personal-site') ? '/personal-site' : '');
+  fetch(`${baseUrl}/about-me/`)
+    .then(response => response.text())
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const itemDetail = doc.querySelector('.item-detail');
+      
+      if (itemDetail) {
+        listItemsContainer.innerHTML = `<div class="about-content">${itemDetail.outerHTML}</div>`;
+      } else {
+        listItemsContainer.innerHTML = '<div class="about-content"><p>About content could not be loaded.</p></div>';
+      }
+    })
+    .catch(error => {
+      console.error('Error loading about content:', error);
+      listItemsContainer.innerHTML = '<div class="about-content"><p>Error loading about content.</p></div>';
+    });
+}
+
 function renderListItems(items) {
   const listItemsContainer = document.getElementById('list-items');
   if (!listItemsContainer) return;
@@ -756,6 +787,42 @@ function closeModal() {
   modal.classList.remove('active');
   document.body.style.overflow = '';
 }
+
+function initGalleryView() {
+  // Simple fade-out animation on navigation, then let browser handle it normally
+  const mainNavItems = document.querySelectorAll('.main-nav .nav-item');
+  console.log('🎯 initGalleryView: Adding simple fade-out to', mainNavItems.length, 'nav items');
+  
+  mainNavItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      // Only handle gallery view
+      if (!document.body.classList.contains('gallery-view')) {
+        return;
+      }
+      
+      const currentPath = window.location.pathname;
+      const targetPath = new URL(item.href).pathname;
+      
+      // Skip if already on target page
+      if (currentPath === targetPath) {
+        e.preventDefault();
+        return;
+      }
+      
+      console.log('🌅 Starting fade-out for navigation to:', item.href);
+      
+      const itemsGrid = document.querySelector('.items-grid');
+      if (itemsGrid) {
+        // Smooth fade out, then let browser navigate
+        itemsGrid.style.transition = 'opacity 0.25s ease';
+        itemsGrid.style.opacity = '0';
+      }
+      
+      // Don't prevent default - let browser navigate normally
+    });
+  });
+}
+
 
 function initCarouselsInModal() {
   const modalBody = document.getElementById('modal-body');

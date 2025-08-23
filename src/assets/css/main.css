@@ -231,8 +231,44 @@ body {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid #eee;
   cursor: grab;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
   position: relative;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* List animation states */
+.list-items.fade-out .list-item {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.list-items.fade-in .list-item {
+  opacity: 1;
+  transform: translateY(0);
+  animation: slideInFromTop 0.5s ease forwards;
+}
+
+.list-item:nth-child(1) { animation-delay: 0.1s; }
+.list-item:nth-child(2) { animation-delay: 0.15s; }
+.list-item:nth-child(3) { animation-delay: 0.2s; }
+.list-item:nth-child(4) { animation-delay: 0.25s; }
+.list-item:nth-child(5) { animation-delay: 0.3s; }
+.list-item:nth-child(6) { animation-delay: 0.35s; }
+.list-item:nth-child(7) { animation-delay: 0.4s; }
+.list-item:nth-child(8) { animation-delay: 0.45s; }
+.list-item:nth-child(9) { animation-delay: 0.5s; }
+.list-item:nth-child(10) { animation-delay: 0.55s; }
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* External link list items */
@@ -248,7 +284,7 @@ body {
 }
 
 .list-item:hover {
-  background: #ffffff;
+  background: #f5f5f5;
 }
 
 
@@ -359,7 +395,7 @@ body.list-view .main-nav {
 
 /* Main content */
 .site-main {
-  padding: var(--grid-unit-x);
+  padding: calc(var(--grid-unit-x) *3);
   padding-top: calc(var(--grid-unit-y) * 2);
 }
 
@@ -390,6 +426,7 @@ body.list-view .main-nav {
   grid-auto-flow: dense;
   justify-content: center;
   padding: 0 calc(var(--grid-unit-x) * var(--gap-multiplier) * 2);
+  opacity: 0; /* Start hidden for smooth fade-in */
 }
 
 /* Item card base */
@@ -405,9 +442,22 @@ body.list-view .main-nav {
   box-shadow: 0 0 30px 30px rgba(0, 0, 0, 0.15), 0 0 20px 5px inset rgba(0, 0, 0, 0.15);
 }
 
+
 /* External link cards */
 .item-card.external-link {
   cursor: grab;
+}
+
+/* External link icon for gallery cards */
+.item-card.external-link::after {
+  content: "↗";
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.875rem;
+  color: #666;
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* Category label styling */
@@ -707,6 +757,58 @@ body.list-view .main-nav {
   letter-spacing: 0.5px;
   margin-bottom: 0.5rem;
   font-weight: 400;
+}
+
+.external-link-meta {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.external-link-meta:hover {
+  color: #333;
+}
+
+.link-icon {
+  font-size: 0.75rem;
+}
+
+/* About content in list view */
+.about-content .item-detail {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.about-content .item-hero {
+  margin-bottom: 1.5rem;
+}
+
+.about-content .item-meta {
+  display: none; /* Hide meta in list view */
+}
+
+/* About content in gallery view */
+.about-content-gallery {
+  grid-column: 1 / -1; /* Take full width */
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-content-gallery .item-detail {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.about-content-gallery .item-meta {
+  display: none; /* Hide meta in gallery view too */
 }
 
 .item-body {

@@ -5,7 +5,7 @@ date: 2025-08-18
 team: []
 tags: ["about"]
 layout: "item.njk"
-size: 1
+size: 2
 order: 1
 permalink: "/about-me/"
 ---

@@ -61,6 +61,20 @@ layout: base.njk
         </div>
       </div>
       {% endif %}
+      
+      {% if link %}
+      <div class="item-meta-section">
+        <h3>Link</h3>
+        <div class="item-link">
+          <a href="{{ link }}" {% if linkExternal %}target="_blank" rel="noopener"{% endif %} class="external-link-meta">
+            {{ link }}
+            {% if linkExternal %}
+              <span class="link-icon">↗</span>
+            {% endif %}
+          </a>
+        </div>
+      </div>
+      {% endif %}
     </div>
     
     <h1 class="item-title">{{ title }}</h1>

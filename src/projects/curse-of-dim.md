@@ -15,7 +15,7 @@ display:
     - "/images/curse-of-dim/installation-pic.jpg"
   showInSlideshow: true    
 layout: "item.njk"
-size: 3
+size: 2
 ---
 
 *This project was the receipient of 2025 Bee Award for Best Original Project*
