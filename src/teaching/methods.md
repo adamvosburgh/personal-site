@@ -11,10 +11,6 @@ layout: "item.njk"
 size: 2
 link: https://methodsinspatialresearch.xyz/
 linkExternal: true
-# display:
-#    slideshowLinks:
-#      - https://methodsinspatialresearch.xyz/
-#    showInSlideshow: False
 ---
 
 *[Link to Course Site](methodsinspatialresearch.xyz)*

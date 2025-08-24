@@ -10,10 +10,6 @@ html {
 
 body {
   font-family: 'Roboto Mono', monospace;
-  /* Alternative font options: */
-  /* font-family: 'Open Sans', sans-serif; */
-  /* font-family: 'Sono', monospace; */
-  /* font-family: 'Courier New', Courier, monospace; */ /* Original */
   line-height: 1.6;
   color: #000;
   background-color: #fff;
@@ -111,19 +107,6 @@ body {
   font-weight: 400;
 }
 
-.nav-description {
-  display: none;
-  font-size: 0.875rem;
-  color: #666;
-  margin-top: 0.25rem;
-}
-
-/* Desktop - hide mobile descriptions */
-@media (min-width: 768px) {
-  .mobile-visible {
-    display: none;
-  }
-}
 
 /* View Management */
 .gallery-view .list-view-content {
@@ -325,7 +308,6 @@ body {
   color: rgb(255, 140, 0);
 }
 
-/* Default to list view on desktop */
 @media (min-width: 768px) {
   body:not(.view-set) {
     .list-view-content {
@@ -340,7 +322,6 @@ body {
   }
 }
 
-/* Mobile adaptations - default to gallery view */
 @media (max-width: 767px) {
   .site-header {
     position: static;
@@ -382,12 +363,8 @@ body {
     white-space: nowrap;
   }
 
-  .mobile-visible {
-    display: none !important;
-  }
 }
 
-/* Extra small screens - even more compact nav */
 @media (max-width: 480px) {
   .main-nav {
     padding: 0.25rem;
@@ -403,7 +380,6 @@ body {
   }
 }
 
-/* Default to gallery view, switch with JavaScript */
 
 body.gallery-view .list-view-content {
   display: none;
@@ -440,7 +416,6 @@ body.list-view .main-nav {
   --size-3-multiplier: 3;
 }
 
-/* Item grid - Masonry with scattered positioning */
 .items-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, var(--grid-unit-x));
@@ -450,7 +425,7 @@ body.list-view .main-nav {
   grid-auto-flow: dense;
   justify-content: center;
   padding: 0 calc(var(--grid-unit-x) * var(--gap-multiplier) * 2);
-  opacity: 0; /* Start hidden for smooth fade-in */
+  opacity: 0;
 }
 
 /* Item card base */
@@ -485,36 +460,8 @@ body.list-view .main-nav {
 }
 
 /* Category label styling */
-.item-category {
-  font-size: 0.875rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  display: inline-block;
-  width: fit-content;
-}
-
-/* Category-specific colors for text */
-.item-card[data-tags*="projects"] .item-category {
-  color: rgb(0, 0, 255);
-}
-
-.item-card[data-tags*="teaching"] .item-category {
-  color: rgb(0, 128, 0);
-}
-
-.item-card[data-tags*="updates"] .item-category {
-  color: rgb(64, 64, 64);
-}
-
-.item-card:not([data-tags*="projects"]):not([data-tags*="teaching"]):not([data-tags*="updates"]) .item-category {
-  color: #000;
-}
 
 
-/* Size variations - using CSS custom properties for easy adjustment */
 .item-card[data-size="1"] {
   grid-column: span var(--size-1-multiplier);
   grid-row: span var(--size-1-multiplier);
@@ -667,7 +614,6 @@ body.list-view .main-nav {
   font-size: 0.875rem;
 }
 
-/* Hover tooltip for descriptions - follows mouse cursor */
 .item-description-tooltip {
   position: relative;
 }
@@ -820,12 +766,12 @@ body.list-view .main-nav {
 }
 
 .about-content .item-meta {
-  display: none; /* Hide meta in list view */
+  display: none;
 }
 
 /* About content in gallery view */
 .about-content-gallery {
-  grid-column: 1 / -1; /* Take full width */
+  grid-column: 1 / -1;
   padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
@@ -838,7 +784,7 @@ body.list-view .main-nav {
 }
 
 .about-content-gallery .item-meta {
-  display: none; /* Hide meta in gallery view too */
+  display: none;
 }
 
 .item-body {
@@ -932,10 +878,9 @@ body.list-view .main-nav {
   height: 100%;
   overflow-y: auto;
   padding: 2rem;
-  padding-top: 4rem; /* Account for close button */
+  padding-top: 4rem;
 }
 
-/* Modal content styling - similar to item detail pages */
 .modal-body .item-detail {
   max-width: none;
   margin: 0;

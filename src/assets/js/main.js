@@ -1,6 +1,4 @@
-// Image carousel functionality
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 DOM Content Loaded - initializing');
   initCarousels();
   initTooltips();
   initViewToggle();
@@ -8,33 +6,18 @@ document.addEventListener('DOMContentLoaded', function() {
   initModal();
   initGalleryView();
   
-  // Better gallery page load transition
   const itemsGrid = document.querySelector('.items-grid');
   if (itemsGrid && document.body.classList.contains('gallery-view')) {
-    console.log('📄 Setting up gallery page load transition');
     
-    // Start with content hidden
     itemsGrid.style.opacity = '0';
     itemsGrid.style.transition = 'none';
     
-    // Small delay then fade in smoothly  
     setTimeout(() => {
       itemsGrid.style.transition = 'opacity 0.4s ease';
       itemsGrid.style.opacity = '1';
-      console.log('✅ Gallery page loaded and faded in');
     }, 100);
   }
   
-  // Log any additional page events that might be causing double loading
-  window.addEventListener('beforeunload', () => {
-    console.log('⚡ Page beforeunload event');
-  });
-  
-  window.addEventListener('load', () => {
-    console.log('📋 Window load event');
-  });
-  
-  // Handle browser back/forward buttons (only for list view)
   window.addEventListener('popstate', (e) => {
     if (e.state && e.state.filter && document.body.classList.contains('list-view')) {
       setActiveFilter(e.state.filter);
@@ -54,20 +37,17 @@ function initCarousels() {
     const images = carousel.querySelectorAll('img');
     let currentSlide = 0;
     
-    if (images.length <= 1) return; // Skip if only one image
+    if (images.length <= 1) return;
     
     function goToSlide(slideIndex) {
-      // Update active dot
       dots[currentSlide].classList.remove('active');
       dots[slideIndex].classList.add('active');
       
-      // Move carousel
       carousel.style.transform = `translateX(-${slideIndex * 100}%)`;
       
       currentSlide = slideIndex;
     }
     
-    // Dot navigation
     dots.forEach((dot, index) => {
       dot.addEventListener('click', () => {
         goToSlide(index);
@@ -89,7 +69,6 @@ function initCarousels() {
       });
     }
     
-    // Auto-advance carousel on hover (optional)
     let autoAdvanceInterval;
     
     container.addEventListener('mouseenter', () => {
@@ -107,13 +86,11 @@ function initCarousels() {
   });
 }
 
-// Tooltip functionality - follows mouse cursor
 function initTooltips() {
   const tooltip = document.createElement('div');
   tooltip.className = 'tooltip-content';
   document.body.appendChild(tooltip);
   
-  // Handle card tooltips only
   const tooltipTriggers = document.querySelectorAll('.item-description-tooltip');
   
   tooltipTriggers.forEach(trigger => {
@@ -137,21 +114,17 @@ function initTooltips() {
 }
 
 
-// View toggle functionality
 function initViewToggle() {
   const body = document.body;
   const galleryBtn = document.getElementById('gallery-btn');
   const listBtn = document.getElementById('list-btn');
   
-  // Check for saved view preference
   const savedView = localStorage.getItem('preferredView');
   const isMobile = window.innerWidth < 768;
   
-  // Set default view: list for desktop, gallery for mobile
   let defaultView = isMobile ? 'gallery' : 'list';
   let activeView = savedView || defaultView;
   
-  // Apply initial view state
   body.classList.add('view-set', activeView + '-view');
   if (activeView === 'gallery' && galleryBtn) {
     galleryBtn.classList.add('active');
@@ -159,47 +132,37 @@ function initViewToggle() {
     listBtn.classList.add('active');
   }
   
-  // Always populate list view on load (for when it's the default)
   if (activeView === 'list') {
-    // Small delay to ensure DOM is ready
     setTimeout(() => {
       populateListView();
     }, 50);
   }
   
-  // Gallery view button
   if (galleryBtn) {
     galleryBtn.addEventListener('click', () => {
-      console.log('🖼️ Switching to gallery view from path:', window.location.pathname, 'isShowingAboutInList:', isShowingAboutInList);
       body.classList.remove('list-view');
       body.classList.add('gallery-view', 'view-set');
       galleryBtn.classList.add('active');
       if (listBtn) listBtn.classList.remove('active');
       localStorage.setItem('preferredView', 'gallery');
       
-      // Trigger fade-in animation for gallery view
       const itemsGrid = document.querySelector('.items-grid');
       if (itemsGrid) {
-        // Start with content hidden
-        itemsGrid.style.opacity = '0';
+            itemsGrid.style.opacity = '0';
         itemsGrid.style.transition = 'none';
         
-        // Small delay then fade in smoothly
         setTimeout(() => {
           itemsGrid.style.transition = 'opacity 0.4s ease';
           itemsGrid.style.opacity = '1';
         }, 100);
       }
       
-      // If we were showing about in list view, navigate to about page
       if (isShowingAboutInList) {
-        console.log('🔄 Was showing about in list, navigating to about page');
         const basePath = window.location.origin + (window.location.pathname.includes('/personal-site') ? '/personal-site' : '');
         window.location.href = `${basePath}/about-me/`;
         return;
       }
       
-      // Make sure the correct nav item is active in gallery view
       setTimeout(() => {
         const mainNavItems = document.querySelectorAll('.main-nav .nav-item');
         const currentPath = window.location.pathname;
@@ -208,7 +171,6 @@ function initViewToggle() {
           const itemPath = new URL(item.href).pathname;
           if (itemPath === currentPath) {
             item.classList.add('active');
-            console.log('✅ Made nav item active:', item.textContent);
           } else {
             item.classList.remove('active');
           }
@@ -217,10 +179,8 @@ function initViewToggle() {
     });
   }
   
-  // List view button
   if (listBtn) {
     listBtn.addEventListener('click', () => {
-      console.log('📋 Switching to list view from path:', window.location.pathname);
       body.classList.remove('gallery-view');
       body.classList.add('list-view', 'view-set');
       listBtn.classList.add('active');
@@ -231,44 +191,34 @@ function initViewToggle() {
   }
 }
 
-// List view functionality
 let currentFilter = 'main';
-let isShowingAboutInList = false; // Track if we're showing about content in list view
+let isShowingAboutInList = false;
 let allItems = [];
-let previewCarouselInterval;
-let currentPreviewIndex = 0;
-
-// Global slideshow functionality (independent of feeds)
 let globalSlideshowInterval;
 let globalSlideshowIndex = 0;
 let globalSlideshowItems = [];
 
 function initListView() {
-  // Collect all items from gallery view
   collectItemsFromGallery();
   
-  // Initialize global slideshow (independent of feed filters)
   initGlobalSlideshow();
   
-  // Set up list navigation
   const listNavItems = document.querySelectorAll('.list-nav .nav-item');
   listNavItems.forEach(item => {
     item.addEventListener('click', (e) => {
       e.preventDefault();
       const filter = item.getAttribute('data-filter');
       
-      // Update URL without reloading page
       const newUrl = item.href;
       history.pushState({filter: filter}, '', newUrl);
       
       setActiveFilter(filter);
-      filterListItems(filter); // This will NOT restart the global slideshow
+      filterListItems(filter);
     });
   });
 }
 
 function collectItemsFromGallery() {
-  // Try to get items from window.siteData if available, otherwise fallback to DOM
   if (window.siteData && window.siteData.allItems) {
     allItems = window.siteData.allItems;
     return;
@@ -283,14 +233,12 @@ function collectItemsFromGallery() {
     const description = card.getAttribute('data-description') || '';
     const url = card.getAttribute('onclick')?.match(/location\.href='([^']+)'/)?.[1] || '';
     
-    // Get cover image
     let coverImage = '';
     const img = card.querySelector('.carousel-image, .image-carousel img');
     if (img) {
       coverImage = img.src;
     }
     
-    // Get tags from category
     const tags = category.split(',').map(tag => tag.trim()).filter(Boolean);
     
     allItems.push({
@@ -308,7 +256,6 @@ function populateListView() {
   const listItemsContainer = document.getElementById('list-items');
   if (!listItemsContainer) return;
   
-  // Set initial filter based on current page
   const currentPath = window.location.pathname;
   if (currentPath.includes('/teaching/')) {
     currentFilter = 'teaching';
@@ -322,10 +269,7 @@ function populateListView() {
     currentFilter = 'main';
   }
   
-  // Reset about flag - we're showing normal list content
   isShowingAboutInList = false;
-  
-  console.log('📋 populateListView - detected filter:', currentFilter, 'from path:', currentPath);
   
   setActiveFilter(currentFilter);
   filterListItems(currentFilter);
@@ -347,12 +291,10 @@ function filterListItems(filter) {
   const listItemsContainer = document.getElementById('list-items');
   if (!listItemsContainer) return;
   
-  // Add fade-out animation
   listItemsContainer.classList.add('fade-out');
   
   setTimeout(() => {
     if (filter === 'about') {
-      // Special case for about: render about content instead of items list
       isShowingAboutInList = true;
       renderAboutContent();
     } else {
@@ -360,12 +302,10 @@ function filterListItems(filter) {
       let filteredItems = [];
       
       if (filter === 'main') {
-        // Show items tagged with 'main'
         filteredItems = allItems.filter(item => 
           item.tags && item.tags.includes('main')
         );
       } else {
-        // Show items with the specific tag (teaching, projects, updates)
         filteredItems = allItems.filter(item => 
           item.tags && item.tags.includes(filter)
         );
@@ -374,25 +314,20 @@ function filterListItems(filter) {
       renderListItems(filteredItems);
     }
     
-    // Remove fade-out and add fade-in
     listItemsContainer.classList.remove('fade-out');
     listItemsContainer.classList.add('fade-in');
     
-    // Remove fade-in class after animation completes
     setTimeout(() => {
       listItemsContainer.classList.remove('fade-in');
     }, 600);
   }, 150);
 }
 
-// Global slideshow - independent of feed filtering
 function initGlobalSlideshow() {
-  // Collect all slideshow images from all items with showInSlideshow: true
   globalSlideshowItems = [];
   
   allItems.forEach((item, index) => {
     if (item.showInSlideshow) {
-      // Add slideshow images
       if (item.slideshowImages && item.slideshowImages.length > 0) {
         item.slideshowImages.forEach(imageSrc => {
           globalSlideshowItems.push({
@@ -405,7 +340,6 @@ function initGlobalSlideshow() {
         });
       }
       
-      // Add slideshow links
       if (item.slideshowLinks && item.slideshowLinks.length > 0) {
         item.slideshowLinks.forEach(linkSrc => {
           globalSlideshowItems.push({
@@ -429,18 +363,14 @@ function startGlobalSlideshow() {
   const previewCarousel = document.getElementById('preview-carousel');
   if (!previewCarousel) return;
   
-  // Clear existing content
   previewCarousel.innerHTML = '';
   
-  // Add all global slideshow content (images and embeds)
   globalSlideshowItems.forEach((slideItem, index) => {
     if (slideItem.type === 'image') {
-      // Add image
       const img = document.createElement('img');
       img.src = slideItem.src;
-      img.dataset.linkedItem = slideItem.linkedItem.title; // For future hover highlighting
+      img.dataset.linkedItem = slideItem.linkedItem.title;
       
-      // Handle external vs internal links
       if (slideItem.linkedItem.linkExternal && slideItem.linkedItem.link) {
         img.style.cursor = 'grab';
         img.onclick = () => window.open(slideItem.linkedItem.link, '_blank');
@@ -455,12 +385,10 @@ function startGlobalSlideshow() {
       
       previewCarousel.appendChild(img);
     } else if (slideItem.type === 'link') {
-      // Add link embed
       const embedDiv = document.createElement('div');
       embedDiv.className = 'preview-embed';
-      embedDiv.dataset.linkedItem = slideItem.linkedItem.title; // For future hover highlighting
+      embedDiv.dataset.linkedItem = slideItem.linkedItem.title;
       
-      // Handle external vs internal links for embeds
       if (slideItem.linkedItem.linkExternal && slideItem.linkedItem.link) {
         embedDiv.style.cursor = 'grab';
         embedDiv.onclick = () => window.open(slideItem.linkedItem.link, '_blank');
@@ -471,7 +399,6 @@ function startGlobalSlideshow() {
       
       let iframe;
       if (slideItem.src.includes('youtube.com') || slideItem.src.includes('youtu.be')) {
-        // YouTube embed
         let videoId = slideItem.src.replace('https://www.youtube.com/watch?v=', '')
                                    .replace('https://youtu.be/', '')
                                    .replace(/&.*/, '');
@@ -480,7 +407,6 @@ function startGlobalSlideshow() {
         iframe.frameBorder = '0';
         iframe.allowFullscreen = true;
       } else {
-        // Generic iframe
         iframe = document.createElement('iframe');
         iframe.src = slideItem.src;
         iframe.frameBorder = '0';
@@ -498,7 +424,6 @@ function startGlobalSlideshow() {
     }
   });
   
-  // Start global slideshow autoplay
   globalSlideshowIndex = 0;
   startGlobalSlideshowAutoplay();
 }
@@ -509,7 +434,6 @@ function startGlobalSlideshowAutoplay() {
   
   if (content.length <= 1) return;
   
-  // Clear any existing interval
   if (globalSlideshowInterval) {
     clearInterval(globalSlideshowInterval);
   }
@@ -544,17 +468,15 @@ function showGlobalSlideshowImage(imageSrc) {
   const previewCarousel = document.getElementById('preview-carousel');
   const content = previewCarousel.querySelectorAll('img, .preview-embed');
   
-  // First try to find matching slideshow image
   let foundMatch = false;
   content.forEach((element, index) => {
     if (element.tagName === 'IMG') {
-      // Extract pathname for comparison (same as before)
       const targetPath = new URL(imageSrc, window.location.origin).pathname;
       const imgPath = new URL(element.src).pathname;
       
       if (imgPath === targetPath) {
         element.classList.add('active');
-        globalSlideshowIndex = index; // Update index for resume
+        globalSlideshowIndex = index;
         foundMatch = true;
       } else {
         element.classList.remove('active');
@@ -564,14 +486,11 @@ function showGlobalSlideshowImage(imageSrc) {
     }
   });
   
-  // If no match found, create temporary image for this hover
   if (!foundMatch) {
-    // Hide all existing content
     content.forEach(element => {
       element.classList.remove('active');
     });
     
-    // Create temporary image
     let existingTempImage = previewCarousel.querySelector('.temp-image');
     if (existingTempImage) {
       existingTempImage.remove();
@@ -589,13 +508,11 @@ function showGlobalSlideshowImage(imageSrc) {
 function showLinkEmbed(linkUrl, title, itemUrl, isExternal = false) {
   const previewCarousel = document.getElementById('preview-carousel');
   
-  // Hide all existing content
   const content = previewCarousel.querySelectorAll('img, .preview-embed');
   content.forEach(element => {
     element.classList.remove('active');
   });
   
-  // Create temporary embed for this hover
   let existingTempEmbed = previewCarousel.querySelector('.temp-embed');
   if (existingTempEmbed) {
     existingTempEmbed.remove();
@@ -604,7 +521,6 @@ function showLinkEmbed(linkUrl, title, itemUrl, isExternal = false) {
   const embedDiv = document.createElement('div');
   embedDiv.className = 'preview-embed temp-embed active';
   
-  // Handle external vs internal links
   if (isExternal) {
     embedDiv.style.cursor = 'grab';
     embedDiv.onclick = () => window.open(linkUrl, '_blank');
@@ -615,7 +531,6 @@ function showLinkEmbed(linkUrl, title, itemUrl, isExternal = false) {
   
   let iframe;
   if (linkUrl.includes('youtube.com') || linkUrl.includes('youtu.be')) {
-    // YouTube embed
     let videoId = linkUrl.replace('https://www.youtube.com/watch?v=', '')
                          .replace('https://youtu.be/', '')
                          .replace(/&.*/, '');
@@ -624,7 +539,6 @@ function showLinkEmbed(linkUrl, title, itemUrl, isExternal = false) {
     iframe.frameBorder = '0';
     iframe.allowFullscreen = true;
   } else {
-    // Generic iframe
     iframe = document.createElement('iframe');
     iframe.src = linkUrl;
     iframe.frameBorder = '0';
@@ -641,7 +555,6 @@ function renderAboutContent() {
   const listItemsContainer = document.getElementById('list-items');
   if (!listItemsContainer) return;
   
-  // Fetch the about page content and render it
   const baseUrl = window.location.origin + (window.location.pathname.includes('/personal-site') ? '/personal-site' : '');
   fetch(`${baseUrl}/about-me/`)
     .then(response => response.text())
@@ -657,7 +570,6 @@ function renderAboutContent() {
       }
     })
     .catch(error => {
-      console.error('Error loading about content:', error);
       listItemsContainer.innerHTML = '<div class="about-content"><p>Error loading about content.</p></div>';
     });
 }
@@ -674,7 +586,6 @@ function renderListItems(items) {
     listItem.setAttribute('data-description', item.description);
     listItem.setAttribute('data-cover-image', item.coverImage);
     
-    // Handle external vs internal links
     if (item.linkExternal && item.link) {
       listItem.onclick = () => window.open(item.link, '_blank');
       listItem.style.cursor = 'grab';
@@ -701,33 +612,25 @@ function renderListItems(items) {
     listItem.appendChild(title);
     listItem.appendChild(tags);
     
-    // Add hover listeners for global slideshow interaction
     listItem.addEventListener('mouseenter', () => {
-      // Pause global slideshow on hover
       pauseGlobalSlideshow();
       
-      // Show related content based on what's available
       if (item.showInSlideshow && item.slideshowImages && item.slideshowImages.length > 0) {
-        // Item has slideshow images - show first one
         showGlobalSlideshowImage(item.slideshowImages[0]);
       } else if (item.coverImage) {
-        // Item has cover image - show it
         showGlobalSlideshowImage(item.coverImage);
       } else if (item.link) {
-        // Item has link but no images - show link embed
         showLinkEmbed(item.link, item.title, item.url, item.linkExternal);
       }
     });
     
     listItem.addEventListener('mouseleave', () => {
-      // Resume global slideshow
       resumeGlobalSlideshow();
     });
     
     listItemsContainer.appendChild(listItem);
   });
   
-  // Re-initialize tooltips for new list items
   initTooltipsForListItems();
 }
 
@@ -762,18 +665,15 @@ function initTooltipsForListItems() {
   });
 }
 
-// Modal functionality
 function initModal() {
   const modal = document.getElementById('item-modal');
   const modalClose = document.getElementById('modal-close');
   const modalBody = document.getElementById('modal-body');
   
-  // Close modal when clicking X
   if (modalClose) {
     modalClose.addEventListener('click', closeModal);
   }
   
-  // Close modal when clicking outside
   if (modal) {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
@@ -782,7 +682,6 @@ function initModal() {
     });
   }
   
-  // Close modal with Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
       closeModal();
@@ -796,18 +695,14 @@ function openModal(itemUrl) {
   
   if (!modal || !modalBody) return;
   
-  // Show loading state
   modalBody.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 50vh; font-size: 1rem;">Loading...</div>';
   
-  // Show modal
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
   
-  // Fetch the item page content
   fetch(itemUrl)
     .then(response => response.text())
     .then(html => {
-      // Parse the HTML and extract the content
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
       const itemDetail = doc.querySelector('.item-detail');
@@ -815,14 +710,12 @@ function openModal(itemUrl) {
       if (itemDetail) {
         modalBody.innerHTML = itemDetail.outerHTML;
         
-        // Re-initialize carousels in modal
         initCarouselsInModal();
       } else {
         modalBody.innerHTML = '<div style="padding: 2rem; text-align: center;">Content could not be loaded.</div>';
       }
     })
     .catch(error => {
-      console.error('Error loading modal content:', error);
       modalBody.innerHTML = '<div style="padding: 2rem; text-align: center;">Error loading content.</div>';
     });
 }
@@ -836,13 +729,10 @@ function closeModal() {
 }
 
 function initGalleryView() {
-  // Simple fade-out animation on navigation, then let browser handle it normally
   const mainNavItems = document.querySelectorAll('.main-nav .nav-item');
-  console.log('🎯 initGalleryView: Adding simple fade-out to', mainNavItems.length, 'nav items');
   
   mainNavItems.forEach(item => {
     item.addEventListener('click', (e) => {
-      // Only handle gallery view
       if (!document.body.classList.contains('gallery-view')) {
         return;
       }
@@ -850,22 +740,18 @@ function initGalleryView() {
       const currentPath = window.location.pathname;
       const targetPath = new URL(item.href).pathname;
       
-      // Skip if already on target page
       if (currentPath === targetPath) {
         e.preventDefault();
         return;
       }
       
-      console.log('🌅 Starting fade-out for navigation to:', item.href);
       
       const itemsGrid = document.querySelector('.items-grid');
       if (itemsGrid) {
-        // Smooth fade out, then let browser navigate
         itemsGrid.style.transition = 'opacity 0.25s ease';
         itemsGrid.style.opacity = '0';
       }
       
-      // Don't prevent default - let browser navigate normally
     });
   });
 }
@@ -883,22 +769,19 @@ function initCarouselsInModal() {
     const images = carousel.querySelectorAll('img, video');
     let currentSlide = 0;
     
-    if (images.length <= 1) return; // Skip if only one image
+    if (images.length <= 1) return;
     
     function goToSlide(slideIndex) {
-      // Update active dot
       if (dots.length > 0) {
         dots[currentSlide].classList.remove('active');
         dots[slideIndex].classList.add('active');
       }
       
-      // Move carousel
       carousel.style.transform = `translateX(-${slideIndex * 100}%)`;
       
       currentSlide = slideIndex;
     }
     
-    // Dot navigation
     dots.forEach((dot, index) => {
       dot.addEventListener('click', () => {
         goToSlide(index);
