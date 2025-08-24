@@ -17,30 +17,30 @@
   <header class="site-header">
     <h1 class="site-title">{{ site.title }}</h1>
     <div class="view-toggle">
-      <button class="view-btn" data-view="list" id="list-btn">List</button>
-      <button class="view-btn" data-view="gallery" id="gallery-btn">Gallery</button>
+      <button class="view-btn" data-view="list" id="list-btn">List View</button>
+      <button class="view-btn" data-view="gallery" id="gallery-btn">Gallery View</button>
     </div>
   </header>
 
   <nav class="main-nav">
     <div class="nav-items">
-      <a href="{{ environment.baseUrl }}/" class="nav-item{% if page.url == '/' %} active{% endif %}" data-description="Latest work and featured projects">
+      <a href="{{ environment.baseUrl }}/" class="nav-item{% if page.url == '/' %} active{% endif %}">
         <span class="nav-text">Main</span>
         <span class="nav-description mobile-visible">Latest work and featured projects</span>
       </a>
-      <a href="{{ environment.baseUrl }}/teaching/" class="nav-item{% if '/teaching/' in page.url %} active{% endif %}" data-description="Courses, workshops, and educational content">
+      <a href="{{ environment.baseUrl }}/teaching/" class="nav-item{% if '/teaching/' in page.url %} active{% endif %}">
         <span class="nav-text">Teaching</span>
         <span class="nav-description mobile-visible">Courses, workshops, and educational content</span>
       </a>
-      <a href="{{ environment.baseUrl }}/projects/" class="nav-item{% if '/projects/' in page.url %} active{% endif %}" data-description="Side projects and experimental work">
+      <a href="{{ environment.baseUrl }}/projects/" class="nav-item{% if '/projects/' in page.url %} active{% endif %}">
         <span class="nav-text">Projects</span>
         <span class="nav-description mobile-visible">Side projects and experimental work</span>
       </a>
-      <a href="{{ environment.baseUrl }}/updates/" class="nav-item{% if '/updates/' in page.url %} active{% endif %}" data-description="News, updates, and announcements">
+      <a href="{{ environment.baseUrl }}/updates/" class="nav-item{% if '/updates/' in page.url %} active{% endif %}">
         <span class="nav-text">Updates</span>
         <span class="nav-description mobile-visible">News, updates, and announcements</span>
       </a>
-      <a href="{{ environment.baseUrl }}/about/" class="nav-item{% if '/about/' in page.url %} active{% endif %}" data-description="Background, experience, and personal info">
+      <a href="{{ environment.baseUrl }}/about/" class="nav-item{% if '/about/' in page.url %} active{% endif %}">
         <span class="nav-text">About</span>
         <span class="nav-description mobile-visible">Background, experience, and personal info</span>
       </a>

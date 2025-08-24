@@ -113,8 +113,8 @@ function initTooltips() {
   tooltip.className = 'tooltip-content';
   document.body.appendChild(tooltip);
   
-  // Handle both card tooltips and nav tooltips
-  const tooltipTriggers = document.querySelectorAll('.item-description-tooltip, .nav-item[data-description]');
+  // Handle card tooltips only
+  const tooltipTriggers = document.querySelectorAll('.item-description-tooltip');
   
   tooltipTriggers.forEach(trigger => {
     const description = trigger.getAttribute('data-description');
@@ -170,18 +170,57 @@ function initViewToggle() {
   // Gallery view button
   if (galleryBtn) {
     galleryBtn.addEventListener('click', () => {
+      console.log('🖼️ Switching to gallery view from path:', window.location.pathname, 'isShowingAboutInList:', isShowingAboutInList);
       body.classList.remove('list-view');
       body.classList.add('gallery-view', 'view-set');
       galleryBtn.classList.add('active');
       if (listBtn) listBtn.classList.remove('active');
       localStorage.setItem('preferredView', 'gallery');
       
+      // Trigger fade-in animation for gallery view
+      const itemsGrid = document.querySelector('.items-grid');
+      if (itemsGrid) {
+        // Start with content hidden
+        itemsGrid.style.opacity = '0';
+        itemsGrid.style.transition = 'none';
+        
+        // Small delay then fade in smoothly
+        setTimeout(() => {
+          itemsGrid.style.transition = 'opacity 0.4s ease';
+          itemsGrid.style.opacity = '1';
+        }, 100);
+      }
+      
+      // If we were showing about in list view, navigate to about page
+      if (isShowingAboutInList) {
+        console.log('🔄 Was showing about in list, navigating to about page');
+        const basePath = window.location.origin + (window.location.pathname.includes('/personal-site') ? '/personal-site' : '');
+        window.location.href = `${basePath}/about-me/`;
+        return;
+      }
+      
+      // Make sure the correct nav item is active in gallery view
+      setTimeout(() => {
+        const mainNavItems = document.querySelectorAll('.main-nav .nav-item');
+        const currentPath = window.location.pathname;
+        
+        mainNavItems.forEach(item => {
+          const itemPath = new URL(item.href).pathname;
+          if (itemPath === currentPath) {
+            item.classList.add('active');
+            console.log('✅ Made nav item active:', item.textContent);
+          } else {
+            item.classList.remove('active');
+          }
+        });
+      }, 50);
     });
   }
   
   // List view button
   if (listBtn) {
     listBtn.addEventListener('click', () => {
+      console.log('📋 Switching to list view from path:', window.location.pathname);
       body.classList.remove('gallery-view');
       body.classList.add('list-view', 'view-set');
       listBtn.classList.add('active');
@@ -194,6 +233,7 @@ function initViewToggle() {
 
 // List view functionality
 let currentFilter = 'main';
+let isShowingAboutInList = false; // Track if we're showing about content in list view
 let allItems = [];
 let previewCarouselInterval;
 let currentPreviewIndex = 0;
@@ -282,6 +322,11 @@ function populateListView() {
     currentFilter = 'main';
   }
   
+  // Reset about flag - we're showing normal list content
+  isShowingAboutInList = false;
+  
+  console.log('📋 populateListView - detected filter:', currentFilter, 'from path:', currentPath);
+  
   setActiveFilter(currentFilter);
   filterListItems(currentFilter);
 }
@@ -308,8 +353,10 @@ function filterListItems(filter) {
   setTimeout(() => {
     if (filter === 'about') {
       // Special case for about: render about content instead of items list
+      isShowingAboutInList = true;
       renderAboutContent();
     } else {
+      isShowingAboutInList = false;
       let filteredItems = [];
       
       if (filter === 'main') {

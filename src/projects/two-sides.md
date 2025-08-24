@@ -19,7 +19,7 @@ display:
   showInSlideshow: true      
 link: "https://vimeo.com/1084762935"
 layout: "item.njk"
-size: 2
+size: 3
 ---
 
 *This project was the receipient of 2025 Bee Award for Best Original Project*

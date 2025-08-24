@@ -49,7 +49,7 @@ body {
 
 .view-btn {
   padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
+  border: none;
   background: white;
   cursor: pointer;
   font-family: 'Roboto Mono', monospace;
@@ -62,8 +62,9 @@ body {
 }
 
 .view-btn.active {
-  background: #000;
-  color: white;
+  background: white;
+  color: #000;
+  text-decoration: underline;
 }
 
 /* Navigation */
@@ -186,8 +187,8 @@ body {
 }
 
 .list-nav .nav-item.active {
-  background: #000;
-  color: white;
+  color: #000;
+  text-decoration: underline;
 }
 
 .list-preview {
@@ -320,8 +321,8 @@ body {
 }
 
 .tag-pill[data-tag="updates"] {
-  background: rgba(64, 64, 64, 0.1);
-  color: rgb(64, 64, 64);
+  background: rgba(255, 165, 0, 0.1);
+  color: rgb(255, 140, 0);
 }
 
 /* Default to list view on desktop */
@@ -361,21 +362,44 @@ body {
   .main-nav {
     background: white;
     border: 1px solid #000;
+    padding: 0.25rem 0.5rem;
+    width: auto;
+    min-width: fit-content;
   }
 
   .nav-items {
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .nav-item {
-    flex: 1;
+    flex: 0 1 auto;
     text-align: center;
-    padding: 1rem 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
 
   .mobile-visible {
     display: none !important;
+  }
+}
+
+/* Extra small screens - even more compact nav */
+@media (max-width: 480px) {
+  .main-nav {
+    padding: 0.25rem;
+  }
+  
+  .nav-items {
+    gap: 0.25rem;
+  }
+  
+  .nav-item {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -439,7 +463,7 @@ body.list-view .main-nav {
   flex-direction: column;
   padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 0 30px 30px rgba(0, 0, 0, 0.15), 0 0 20px 5px inset rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.15), 0 0 10px 5px inset rgba(0, 0, 0, 0.15);
 }
 
 
@@ -611,6 +635,12 @@ body.list-view .main-nav {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+}
+
+.item-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .item-title {

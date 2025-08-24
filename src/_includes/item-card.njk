@@ -1,10 +1,4 @@
 <article class="item-card item-description-tooltip{% if item.data.linkExternal %} external-link{% endif %}" data-size="{{ item.data.size or 1 }}" data-tags="{{ item.data.tags | join(',') }}" {% if item.data.shortDescription %}data-description="{{ item.data.shortDescription }}"{% endif %} onclick="{% if item.data.linkExternal and item.data.link %}window.open('{{ item.data.link }}', '_blank'){% else %}openModal('{{ environment.baseUrl }}{{ item.url }}'){% endif %}">
-  <div class="item-category">
-    {% for tag in item.data.tags %}
-      {% if tag != "main" %}{{ tag }}{% endif %}
-    {% endfor %}
-  </div>
-  
   {% if item.data.display and item.data.display.coverImage %}
   <div class="item-images">
     {% safeImage "./src" + item.data.display.coverImage, item.data.title %}
@@ -28,5 +22,10 @@
 
   <div class="item-content">
     <h2 class="item-title">{{ item.data.title }}</h2>
+    <div class="item-tags">
+      {% for tag in item.data.tags %}
+        <span class="tag-pill" data-tag="{{ tag }}">{{ tag }}</span>
+      {% endfor %}
+    </div>
   </div>
 </article>
