@@ -20,6 +20,7 @@ module.exports = function(eleventyConfig) {
   // Copy static assets
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/images");
+  eleventyConfig.addPassthroughCopy("src/favicon");
   
   // Watch targets
   eleventyConfig.addWatchTarget("./src/assets/");
