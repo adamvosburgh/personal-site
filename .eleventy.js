@@ -4,9 +4,8 @@ const markdownIt = require("markdown-it");
 const markdownItAttrs = require("markdown-it-attrs");
 
 module.exports = function(eleventyConfig) {
-  // Set path prefix only for production (GitHub Pages)
-  const isProduction = process.env.NODE_ENV === 'production';
-  const pathPrefix = isProduction ? '/personal-site/' : '';
+  // No path prefix needed for custom domain
+  const pathPrefix = '';
   // Plugins
   eleventyConfig.addPlugin(syntaxHighlight);
   
