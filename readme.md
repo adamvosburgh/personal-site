@@ -7,7 +7,7 @@ Personal site currently served at https://adamvosburgh.com. Collection of projec
 - Nunjucks renders the content into HTML pages and outputs static content in _site/
 - Deployed with Github Actions and hosted in Github Pages
 
-If you would like to use this website, either - feel free to fork it! Just not the work :)
+If you would like to use this website, feel free to fork it! Just not the work :)
 
 **About the design:**
 
