@@ -124,17 +124,18 @@ function initViewToggle() {
   let defaultView = isMobile ? 'gallery' : 'list';
   let activeView = savedView || defaultView;
   
-  body.classList.add('view-set', activeView + '-view');
-  if (activeView === 'gallery' && galleryBtn) {
-    galleryBtn.classList.add('active');
-  } else if (activeView === 'list' && listBtn) {
-    listBtn.classList.add('active');
-  }
-  
+  // Set initial view
   if (activeView === 'list') {
-    setTimeout(() => {
-      populateListView();
-    }, 50);
+    body.classList.add('list-view');
+    body.classList.remove('gallery-view');
+    if (listBtn) listBtn.classList.add('active');
+    if (galleryBtn) galleryBtn.classList.remove('active');
+    populateListView();
+  } else {
+    body.classList.add('gallery-view');
+    body.classList.remove('list-view');
+    if (galleryBtn) galleryBtn.classList.add('active');
+    if (listBtn) listBtn.classList.remove('active');
   }
   
   if (galleryBtn) {
