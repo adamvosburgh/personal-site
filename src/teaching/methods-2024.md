@@ -9,5 +9,5 @@ display:
   coverImage: "/images/methods/methods-2024.png"
 link: https://www.arch.columbia.edu/courses/11700-4631
 linkExternal: true
-size: 2
+size: 1
 ---

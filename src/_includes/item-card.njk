@@ -1,4 +1,4 @@
-<article class="item-card item-description-tooltip{% if item.data.linkExternal %} external-link{% endif %}" data-size="{{ item.data.size or 1 }}" data-tags="{{ item.data.tags | join(',') }}" {% if item.data.shortDescription %}data-description="{{ item.data.shortDescription }}"{% endif %} onclick="{% if item.data.linkExternal and item.data.link %}window.open('{{ item.data.link }}', '_blank'){% else %}openModal('{{ environment.baseUrl }}{{ item.url }}'){% endif %}">
+<article class="item-card{% if item.data.linkExternal %} external-link{% endif %}" data-size="{{ item.data.size or 1 }}" data-tags="{{ item.data.tags | join(',') }}" onclick="{% if item.data.linkExternal and item.data.link %}window.open('{{ item.data.link }}', '_blank'){% else %}openModal('{{ environment.baseUrl }}{{ item.url }}'){% endif %}">
   {% if item.data.display and item.data.display.coverImage %}
   <div class="item-images">
     {% safeImage "./src" + item.data.display.coverImage, item.data.title %}
@@ -26,6 +26,20 @@
       {% for tag in item.data.tags %}
         <span class="tag-pill" data-tag="{{ tag }}">{{ tag }}</span>
       {% endfor %}
+    </div>
+  </div>
+
+  <div class="item-hover-overlay">
+    <div class="hover-content">
+      <h3 class="hover-title">{{ item.data.title }}</h3>
+      {% if item.data.shortDescription %}
+        <p class="hover-description">{{ item.data.shortDescription }}</p>
+      {% endif %}
+      <div class="hover-tags">
+        {% for tag in item.data.tags %}
+          <span class="hover-tag-pill" data-tag="{{ tag }}">{{ tag }}</span>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </article>

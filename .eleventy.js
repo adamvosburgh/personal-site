@@ -60,7 +60,7 @@ module.exports = function(eleventyConfig) {
       .sort((a, b) => new Date(b.data.date) - new Date(a.data.date)); // Most recent first
   });
 
-  // Image shortcode with fallback to placeholder
+  // Media shortcode with support for images and videos
   eleventyConfig.addShortcode("safeImage", function(src, alt) {
     const fs = require('fs');
     const path = require('path');
@@ -71,6 +71,17 @@ module.exports = function(eleventyConfig) {
       if (fs.existsSync(path.resolve(src))) {
         const webPath = src.replace('./src/', '/').replace('src/', '/');
         const finalPath = pathPrefix + webPath;
+        const ext = path.extname(src).toLowerCase();
+        
+        // Handle video files
+        if (ext === '.mp4' || ext === '.webm' || ext === '.mov') {
+          return `<video class="carousel-image" autoplay muted loop playsinline>
+            <source src="${finalPath}" type="video/${ext.substring(1)}">
+            Your browser does not support the video tag.
+          </video>`;
+        }
+        
+        // Handle image files
         return `<img src="${finalPath}" alt="${alt}" class="carousel-image" loading="lazy">`;
       } else {
         return `<div class="image-placeholder">
@@ -79,7 +90,7 @@ module.exports = function(eleventyConfig) {
       }
     } catch (error) {
       return `<div class="image-placeholder">
-        <span>Error loading image</span>
+        <span>Error loading media</span>
       </div>`;
     }
   });

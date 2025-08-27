@@ -54,7 +54,6 @@ function initCarousels() {
       });
     });
     
-    // Arrow navigation
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
         const prevSlide = currentSlide === 0 ? images.length - 1 : currentSlide - 1;
@@ -430,7 +429,7 @@ function startGlobalSlideshow() {
 
 function startGlobalSlideshowAutoplay() {
   const previewCarousel = document.getElementById('preview-carousel');
-  const content = previewCarousel.querySelectorAll('img, .preview-embed');
+  const content = previewCarousel.querySelectorAll('img, video, .preview-embed');
   
   if (content.length <= 1) return;
   
@@ -441,12 +440,18 @@ function startGlobalSlideshowAutoplay() {
   globalSlideshowInterval = setInterval(() => {
     if (content[globalSlideshowIndex]) {
       content[globalSlideshowIndex].classList.remove('active');
+      if (content[globalSlideshowIndex].tagName === 'VIDEO') {
+        content[globalSlideshowIndex].pause();
+      }
     }
     
     globalSlideshowIndex = (globalSlideshowIndex + 1) % content.length;
     
     if (content[globalSlideshowIndex]) {
       content[globalSlideshowIndex].classList.add('active');
+      if (content[globalSlideshowIndex].tagName === 'VIDEO') {
+        content[globalSlideshowIndex].play();
+      }
     }
   }, 5000);
 }
@@ -464,14 +469,14 @@ function resumeGlobalSlideshow() {
   }
 }
 
-function showGlobalSlideshowImage(imageSrc) {
+function showGlobalSlideshowImage(mediaSrc) {
   const previewCarousel = document.getElementById('preview-carousel');
-  const content = previewCarousel.querySelectorAll('img, .preview-embed');
+  const content = previewCarousel.querySelectorAll('img, video, .preview-embed');
   
   let foundMatch = false;
   content.forEach((element, index) => {
     if (element.tagName === 'IMG') {
-      const targetPath = new URL(imageSrc, window.location.origin).pathname;
+      const targetPath = new URL(mediaSrc, window.location.origin).pathname;
       const imgPath = new URL(element.src).pathname;
       
       if (imgPath === targetPath) {
@@ -481,6 +486,20 @@ function showGlobalSlideshowImage(imageSrc) {
       } else {
         element.classList.remove('active');
       }
+    } else if (element.tagName === 'VIDEO') {
+      const targetPath = new URL(mediaSrc, window.location.origin).pathname;
+      const videoSource = element.querySelector('source');
+      const videoPath = videoSource ? new URL(videoSource.src).pathname : '';
+      
+      if (videoPath === targetPath) {
+        element.classList.add('active');
+        element.play();
+        globalSlideshowIndex = index;
+        foundMatch = true;
+      } else {
+        element.classList.remove('active');
+        element.pause();
+      }
     } else {
       element.classList.remove('active');
     }
@@ -489,19 +508,41 @@ function showGlobalSlideshowImage(imageSrc) {
   if (!foundMatch) {
     content.forEach(element => {
       element.classList.remove('active');
+      if (element.tagName === 'VIDEO') {
+        element.pause();
+      }
     });
     
-    let existingTempImage = previewCarousel.querySelector('.temp-image');
-    if (existingTempImage) {
-      existingTempImage.remove();
+    let existingTempMedia = previewCarousel.querySelector('.temp-image, .temp-video');
+    if (existingTempMedia) {
+      existingTempMedia.remove();
     }
     
-    const tempImg = document.createElement('img');
-    tempImg.className = 'temp-image active';
-    tempImg.src = imageSrc;
-    tempImg.style.cursor = 'grab';
+    const isVideo = /\.(mp4|webm|mov)$/i.test(mediaSrc);
     
-    previewCarousel.appendChild(tempImg);
+    if (isVideo) {
+      const tempVideo = document.createElement('video');
+      tempVideo.className = 'temp-video active';
+      tempVideo.autoplay = true;
+      tempVideo.muted = true;
+      tempVideo.loop = true;
+      tempVideo.playsInline = true;
+      tempVideo.style.cursor = 'grab';
+      
+      const source = document.createElement('source');
+      source.src = mediaSrc;
+      source.type = `video/${mediaSrc.split('.').pop()}`;
+      tempVideo.appendChild(source);
+      
+      previewCarousel.appendChild(tempVideo);
+    } else {
+      const tempImg = document.createElement('img');
+      tempImg.className = 'temp-image active';
+      tempImg.src = mediaSrc;
+      tempImg.style.cursor = 'grab';
+      
+      previewCarousel.appendChild(tempImg);
+    }
   }
 }
 
@@ -788,7 +829,6 @@ function initCarouselsInModal() {
       });
     });
     
-    // Arrow navigation
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
         const prevSlide = currentSlide === 0 ? images.length - 1 : currentSlide - 1;

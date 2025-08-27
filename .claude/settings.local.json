@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(sed:*)",
-      "Bash(nslookup:*)"
+      "Bash(nslookup:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

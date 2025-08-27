@@ -12,12 +12,12 @@ images:
   - "/images/two-sides/anthrome-close.jpg"
   - "/images/two-sides/biome-close.jpg"
 display:
-  coverImage: "/images/two-sides/anthrome-cover.jpg"        # Single image for cards
-  slideshowImages:                               # Multiple images for slideshow
+  coverImage: "/images/two-sides/anthrome-cover.jpg"        
+  slideshowImages:                               
     - "/images/two-sides/anthrome-cover.jpg"
     - "/images/two-sides/biome-cover.jpg"
   showInSlideshow: true      
-link: "https://vimeo.com/1084762935"
+link: 
 layout: "item.njk"
 size: 3
 ---
