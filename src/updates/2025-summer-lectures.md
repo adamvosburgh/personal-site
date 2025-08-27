@@ -1,5 +1,5 @@
 ---
-title: "MSCDP Conversations with Practioners
+title: "MSCDP Conversations with Practioners"
 shortDescription: "Summer CDP Lecture Series, Introducing incoming students to a range of computational design practices."
 date: 2025-07-01
 team: ["Adam Vosburgh"]
