@@ -3,7 +3,7 @@ title: "MSCDP Conversations with Practioners"
 shortDescription: "Summer CDP Lecture Series, Introducing incoming students to a range of computational design practices."
 date: 2025-07-01
 team: ["Adam Vosburgh"]
-tags: ["main", "updates"]
+tags: ["updates"]
 images: 
 display:
   coverImage: "/images/summer-lectures/2025-CDP_Overall_4-5.mp4"
