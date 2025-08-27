@@ -1,6 +1,6 @@
 Personal site currently served at https://adamvosburgh.com. Collection of projects and other things that serve as a kind of web CV.
 
-**How this site works:f**
+**How this site works:**
 - Initialized with Git LFS to handle large files I may add down the road.
 - Eleventy reads the markdown files located in src/ 
 - The 'Layout' frontmatter dictates which template a file will be processed through
@@ -9,7 +9,7 @@ Personal site currently served at https://adamvosburgh.com. Collection of projec
 
 If you would like to use this website, either - feel free to fork it! Just not the work :)
 
-**About the design: **
+**About the design:**
 
 This is the third iteration of my personal website. The goal of this iteration was to make something where editing or adding an item did not feel like a massive task—I often feel in portfolio sites so much is crafted around what you see first. The site has two views: list and gallery, the former designed for desktop, the latter mobile.
 
