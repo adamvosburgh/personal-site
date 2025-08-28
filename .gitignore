@@ -6,3 +6,4 @@ _site/
 npm-debug.log*
 .nyc_output
 coverage/
+.claude/
