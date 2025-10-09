@@ -15,7 +15,7 @@ display:
   slideshowImages:                               
   showInSlideshow: false    
 layout: "item.njk"
-size: 3
+size: 2
 link: https://adamvosburgh.github.io/kallax-configurator/
 linkExternal: true
 ---
