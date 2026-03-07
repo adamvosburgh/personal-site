@@ -1079,6 +1079,80 @@ h1.item-title {
   }
 }
 
+/* Apps View */
+.apps-view-content {
+  display: none;
+}
+
+.apps-view .apps-view-content {
+  display: block;
+  padding-top: 4rem;
+}
+
+.apps-view .gallery-view-content,
+.apps-view .list-view-content {
+  display: none;
+}
+
+.apps-view .main-nav {
+  display: none;
+}
+
+.gallery-view .apps-view-content,
+.list-view .apps-view-content {
+  display: none;
+}
+
+body.apps-view .apps-view-content {
+  display: block;
+  padding-top: 4rem;
+}
+
+body.apps-view .gallery-view-content,
+body.apps-view .list-view-content {
+  display: none;
+}
+
+body.apps-view .main-nav {
+  display: none;
+}
+
+.apps-list {
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.apps-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.app-link {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.app-link::after {
+  content: " ↗";
+  font-size: 0.75rem;
+}
+
+.app-link:hover {
+  color: #000;
+}
+
+.app-protected {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.75rem;
+  color: #999;
+}
+
 /* Utilities */
 .sr-only {
   position: absolute;

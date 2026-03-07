@@ -117,56 +117,66 @@ function initViewToggle() {
   const body = document.body;
   const galleryBtn = document.getElementById('gallery-btn');
   const listBtn = document.getElementById('list-btn');
-  
+  const appsBtn = document.getElementById('apps-btn');
+
   const savedView = localStorage.getItem('preferredView');
   const isMobile = window.innerWidth < 768;
-  
+
   let defaultView = isMobile ? 'gallery' : 'list';
   let activeView = savedView || defaultView;
-  
+
   // Set initial view
   if (activeView === 'list') {
     body.classList.add('list-view');
-    body.classList.remove('gallery-view');
+    body.classList.remove('gallery-view', 'apps-view');
     if (listBtn) listBtn.classList.add('active');
     if (galleryBtn) galleryBtn.classList.remove('active');
+    if (appsBtn) appsBtn.classList.remove('active');
     populateListView();
+  } else if (activeView === 'apps') {
+    body.classList.add('apps-view');
+    body.classList.remove('gallery-view', 'list-view');
+    if (appsBtn) appsBtn.classList.add('active');
+    if (galleryBtn) galleryBtn.classList.remove('active');
+    if (listBtn) listBtn.classList.remove('active');
   } else {
     body.classList.add('gallery-view');
-    body.classList.remove('list-view');
+    body.classList.remove('list-view', 'apps-view');
     if (galleryBtn) galleryBtn.classList.add('active');
     if (listBtn) listBtn.classList.remove('active');
+    if (appsBtn) appsBtn.classList.remove('active');
   }
-  
+
   if (galleryBtn) {
     galleryBtn.addEventListener('click', () => {
-      body.classList.remove('list-view');
+      body.classList.remove('list-view', 'apps-view');
       body.classList.add('gallery-view', 'view-set');
       galleryBtn.classList.add('active');
       if (listBtn) listBtn.classList.remove('active');
+      if (appsBtn) appsBtn.classList.remove('active');
       localStorage.setItem('preferredView', 'gallery');
-      
+
       const itemsGrid = document.querySelector('.items-grid');
       if (itemsGrid) {
             itemsGrid.style.opacity = '0';
         itemsGrid.style.transition = 'none';
-        
+
         setTimeout(() => {
           itemsGrid.style.transition = 'opacity 0.4s ease';
           itemsGrid.style.opacity = '1';
         }, 100);
       }
-      
+
       if (isShowingAboutInList) {
         const basePath = window.location.origin + (window.location.pathname.includes('/personal-site') ? '/personal-site' : '');
         window.location.href = `${basePath}/about-me/`;
         return;
       }
-      
+
       setTimeout(() => {
         const mainNavItems = document.querySelectorAll('.main-nav .nav-item');
         const currentPath = window.location.pathname;
-        
+
         mainNavItems.forEach(item => {
           const itemPath = new URL(item.href).pathname;
           if (itemPath === currentPath) {
@@ -178,15 +188,27 @@ function initViewToggle() {
       }, 50);
     });
   }
-  
+
   if (listBtn) {
     listBtn.addEventListener('click', () => {
-      body.classList.remove('gallery-view');
+      body.classList.remove('gallery-view', 'apps-view');
       body.classList.add('list-view', 'view-set');
       listBtn.classList.add('active');
       if (galleryBtn) galleryBtn.classList.remove('active');
+      if (appsBtn) appsBtn.classList.remove('active');
       populateListView();
       localStorage.setItem('preferredView', 'list');
+    });
+  }
+
+  if (appsBtn) {
+    appsBtn.addEventListener('click', () => {
+      body.classList.remove('gallery-view', 'list-view');
+      body.classList.add('apps-view', 'view-set');
+      appsBtn.classList.add('active');
+      if (galleryBtn) galleryBtn.classList.remove('active');
+      if (listBtn) listBtn.classList.remove('active');
+      localStorage.setItem('preferredView', 'apps');
     });
   }
 }
