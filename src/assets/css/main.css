@@ -716,6 +716,19 @@ body.list-view .site-main {
   width: 100%;
 }
 
+.image-carousel picture {
+  flex-shrink: 0;
+  width: 100%;
+  display: block;
+}
+
+.image-carousel picture img {
+  width: 100%;
+  height: 40vh;
+  object-fit: contain;
+  display: block;
+}
+
 .carousel-image {
   width: 100%;
   height: auto;
@@ -1013,6 +1026,28 @@ h1.item-title {
 
 .about-content-gallery .item-meta {
   display: none;
+}
+
+.gallery-about-body {
+  display: flex;
+  justify-content: center;
+}
+
+.gallery-about-body .item-detail {
+  width: 100%;
+  max-width: 800px;
+  margin: 0;
+  padding: 0;
+}
+
+.gallery-about-body .item-meta {
+  display: none;
+}
+
+.gallery-about-body .item-body {
+  font-size: 0.8rem;
+  color: #555;
+  line-height: 1.6;
 }
 
 .item-body {

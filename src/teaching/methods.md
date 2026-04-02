@@ -6,7 +6,11 @@ team: ["Adam Vosburgh"]
 tags: ["selected","teaching"]
 feedImages: 
 images:
-coverImage: /images/methods/methods.png
+display:
+    coverImage: /images/methods/methods.png
+    slideshowImages:                               
+    - "/images/methods/methods.png"
+    showInSlideshow: true  
 layout: "item.njk"
 size: 2
 link: https://methodsinspatialresearch.xyz/

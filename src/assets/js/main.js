@@ -146,19 +146,6 @@ function initViewToggle() {
       localStorage.setItem('preferredView', 'gallery');
 
 
-      setTimeout(() => {
-        const mainNavItems = document.querySelectorAll('.main-nav .nav-item');
-        const currentPath = window.location.pathname;
-
-        mainNavItems.forEach(item => {
-          const itemPath = new URL(item.href).pathname;
-          if (itemPath === currentPath) {
-            item.classList.add('active');
-          } else {
-            item.classList.remove('active');
-          }
-        });
-      }, 50);
     });
   }
 
@@ -244,20 +231,7 @@ function populateListView() {
   const listItemsContainer = document.getElementById('list-items');
   if (!listItemsContainer) return;
 
-  const currentPath = window.location.pathname;
-  if (currentPath.includes('/teaching/')) {
-    currentFilter = 'teaching';
-  } else if (currentPath.includes('/projects/')) {
-    currentFilter = 'projects';
-  } else if (currentPath.includes('/updates/')) {
-    currentFilter = 'updates';
-  } else if (currentPath.includes('/about/')) {
-    currentFilter = 'about';
-  } else {
-    currentFilter = 'selected';
-  }
-
-  setActiveFilter(currentFilter);
+  currentFilter = 'selected';
   renderAllSections(null);
 }
 
@@ -315,10 +289,10 @@ function renderAllSections(scrollToFilter) {
   };
 
   appendSection('Selected', 'selected');
-  appendAboutSection();
   appendSection('Projects', 'projects');
   appendSection('Updates', 'updates');
   appendSection('Teaching', 'teaching');
+  appendAboutSection();
 
   if (scrollToFilter) {
     setTimeout(() => scrollToListSection(scrollToFilter), 50);
@@ -809,6 +783,31 @@ function buildCombinedGallery() {
     sectionEl.appendChild(grid);
     galleryContent.appendChild(sectionEl);
   });
+
+  // About section
+  const aboutSectionEl = document.createElement('div');
+  aboutSectionEl.className = 'gallery-section';
+  aboutSectionEl.id = 'gallery-section-about';
+
+  const aboutHeader = document.createElement('h2');
+  aboutHeader.className = 'gallery-section-header';
+  aboutHeader.textContent = 'About';
+  aboutSectionEl.appendChild(aboutHeader);
+
+  const aboutBody = document.createElement('div');
+  aboutBody.className = 'gallery-about-body';
+  aboutSectionEl.appendChild(aboutBody);
+  galleryContent.appendChild(aboutSectionEl);
+
+  const baseUrl = window.location.origin + (window.location.pathname.includes('/personal-site') ? '/personal-site' : '');
+  fetch(`${baseUrl}/about-me/`)
+    .then(r => r.text())
+    .then(html => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const itemDetail = doc.querySelector('.item-detail');
+      if (itemDetail) aboutBody.innerHTML = itemDetail.outerHTML;
+    })
+    .catch(() => {});
 }
 
 function buildGalleryCard(item) {

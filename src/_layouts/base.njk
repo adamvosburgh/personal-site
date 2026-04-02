@@ -34,9 +34,6 @@
       <a href="{{ environment.baseUrl }}/" class="nav-item{% if page.url == '/' %} active{% endif %}" data-filter="selected">
         <span class="nav-text">Selected</span>
       </a>
-      <a href="{{ environment.baseUrl }}/about/" class="nav-item{% if '/about/' in page.url %} active{% endif %}" data-filter="about">
-        <span class="nav-text">About</span>
-      </a>
       <a href="{{ environment.baseUrl }}/projects/" class="nav-item{% if '/projects/' in page.url %} active{% endif %}" data-filter="projects">
         <span class="nav-text">Projects</span>
       </a>
@@ -45,6 +42,9 @@
       </a>
       <a href="{{ environment.baseUrl }}/teaching/" class="nav-item{% if '/teaching/' in page.url %} active{% endif %}" data-filter="teaching">
         <span class="nav-text">Teaching</span>
+      </a>
+      <a href="{{ environment.baseUrl }}/about/" class="nav-item" data-filter="about">
+        <span class="nav-text">About</span>
       </a>
     </div>
   </nav>
@@ -58,11 +58,11 @@
         <div class="list-sidebar">
           <nav class="list-nav">
             <div class="nav-items">
-              <a href="{{ environment.baseUrl }}/" class="nav-item{% if page.url == '/' %} active{% endif %}" data-filter="selected">Selected</a>
-              <a href="{{ environment.baseUrl }}/about/" class="nav-item{% if '/about/' in page.url %} active{% endif %}" data-filter="about">About</a>
-              <a href="{{ environment.baseUrl }}/projects/" class="nav-item{% if '/projects/' in page.url %} active{% endif %}" data-filter="projects">Projects</a>
-              <a href="{{ environment.baseUrl }}/updates/" class="nav-item{% if '/updates/' in page.url %} active{% endif %}" data-filter="updates">Updates</a>
-              <a href="{{ environment.baseUrl }}/teaching/" class="nav-item{% if '/teaching/' in page.url %} active{% endif %}" data-filter="teaching">Teaching</a>
+              <a href="{{ environment.baseUrl }}/" class="nav-item" data-filter="selected">Selected</a>
+              <a href="{{ environment.baseUrl }}/projects/" class="nav-item" data-filter="projects">Projects</a>
+              <a href="{{ environment.baseUrl }}/updates/" class="nav-item" data-filter="updates">Updates</a>
+              <a href="{{ environment.baseUrl }}/teaching/" class="nav-item" data-filter="teaching">Teaching</a>
+              <a href="{{ environment.baseUrl }}/about/" class="nav-item" data-filter="about">About</a>
             </div>
           </nav>
           <div class="list-items" id="list-items">
