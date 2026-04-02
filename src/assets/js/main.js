@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('popstate', (e) => {
     if (e.state && e.state.filter && document.body.classList.contains('list-view')) {
       setActiveFilter(e.state.filter);
-      scrollToListSection(e.state.filter);
+      renderFilteredList(e.state.filter);
     }
   });
 });
@@ -173,7 +173,7 @@ function initViewToggle() {
   }
 }
 
-let currentFilter = 'selected';
+let currentFilter = 'all';
 let allItems = [];
 let globalSlideshowInterval;
 let globalSlideshowIndex = 0;
@@ -187,8 +187,12 @@ function initListView() {
     item.addEventListener('click', (e) => {
       e.preventDefault();
       const filter = item.getAttribute('data-filter');
+      if (filter === 'about') {
+        scrollToListAbout();
+        return;
+      }
       setActiveFilter(filter);
-      scrollToListSection(filter);
+      renderFilteredList(filter);
     });
   });
 }
@@ -231,8 +235,9 @@ function populateListView() {
   const listItemsContainer = document.getElementById('list-items');
   if (!listItemsContainer) return;
 
-  currentFilter = 'selected';
-  renderAllSections(null);
+  currentFilter = 'all';
+  setActiveFilter('all');
+  renderFilteredList('all');
 }
 
 function setActiveFilter(filter) {
@@ -247,68 +252,40 @@ function setActiveFilter(filter) {
   });
 }
 
-function renderAllSections(scrollToFilter) {
+function renderFilteredList(filter) {
   const listItemsContainer = document.getElementById('list-items');
   if (!listItemsContainer) return;
 
   listItemsContainer.innerHTML = '';
 
-  const appendSection = (label, filter) => {
-    const items = allItems.filter(item => item.tags && item.tags.includes(filter));
-    if (items.length === 0) return;
-    const sectionHeader = document.createElement('div');
-    sectionHeader.className = 'list-section-header';
-    sectionHeader.id = `list-section-${filter}`;
-    sectionHeader.textContent = label;
-    listItemsContainer.appendChild(sectionHeader);
-    items.forEach(item => listItemsContainer.appendChild(createListItemEl(item)));
-  };
-
-  const appendAboutSection = () => {
-    const aboutHeader = document.createElement('div');
-    aboutHeader.className = 'list-section-header';
-    aboutHeader.id = 'list-section-about';
-    aboutHeader.textContent = 'About';
-    listItemsContainer.appendChild(aboutHeader);
-
-    const aboutContainer = document.createElement('div');
-    listItemsContainer.appendChild(aboutContainer);
-
-    const baseUrl = window.location.origin + (window.location.pathname.includes('/personal-site') ? '/personal-site' : '');
-    fetch(`${baseUrl}/about-me/`)
-      .then(response => response.text())
-      .then(html => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const itemDetail = doc.querySelector('.item-detail');
-        if (itemDetail) {
-          aboutContainer.innerHTML = `<div class="about-content">${itemDetail.outerHTML}</div>`;
-        }
-      })
-      .catch(() => {});
-  };
-
-  appendSection('Selected', 'selected');
-  appendSection('Projects', 'projects');
-  appendSection('Updates', 'updates');
-  appendSection('Teaching', 'teaching');
-  appendAboutSection();
-
-  if (scrollToFilter) {
-    setTimeout(() => scrollToListSection(scrollToFilter), 50);
+  if (filter !== 'about') {
+    const nonAbout = allItems.filter(item => !(item.tags && item.tags.includes('about')));
+    const pool = filter === 'all' ? nonAbout : nonAbout.filter(item => item.tags && item.tags.includes(filter));
+    sortItems(pool).forEach(item => listItemsContainer.appendChild(createListItemEl(item)));
   }
-}
 
-function scrollToListSection(filter) {
-  const sectionEl = document.getElementById(`list-section-${filter}`);
-  const listSidebar = document.querySelector('.list-sidebar');
-  if (!sectionEl || !listSidebar) return;
+  // About section always at bottom (scroll target when clicking About nav)
+  const aboutSection = document.createElement('div');
+  aboutSection.className = 'list-about-section';
+  aboutSection.id = 'list-section-about';
+  const aboutHeader = document.createElement('div');
+  aboutHeader.className = 'list-section-header';
+  aboutHeader.textContent = 'About';
+  aboutSection.appendChild(aboutHeader);
+  const aboutBody = document.createElement('div');
+  aboutBody.className = 'list-about-body';
+  aboutSection.appendChild(aboutBody);
+  listItemsContainer.appendChild(aboutSection);
 
-  const sidebarRect = listSidebar.getBoundingClientRect();
-  const sectionRect = sectionEl.getBoundingClientRect();
-  const scrollOffset = listSidebar.scrollTop + (sectionRect.top - sidebarRect.top) - 16;
-
-  listSidebar.scrollTo({ top: scrollOffset, behavior: 'smooth' });
+  const baseUrl = window.location.origin + (window.location.pathname.includes('/personal-site') ? '/personal-site' : '');
+  fetch(`${baseUrl}/about-me/`)
+    .then(r => r.text())
+    .then(html => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const itemBody = doc.querySelector('.item-body');
+      if (itemBody) aboutBody.innerHTML = itemBody.innerHTML;
+    })
+    .catch(() => {});
 }
 
 function initGlobalSlideshow() {
@@ -593,31 +570,31 @@ function createListItemEl(item) {
     listItem.onclick = () => openModal(item.url);
   }
 
-  const titleLine = document.createElement('div');
-  titleLine.className = 'list-item-title';
-  titleLine.textContent = item.title;
-  listItem.appendChild(titleLine);
+  // Meta row: year + tags
+  const metaRow = document.createElement('div');
+  metaRow.className = 'list-item-meta-row';
 
-  const descRow = document.createElement('div');
-  descRow.className = 'list-item-desc-row';
-
-  if (item.description) {
-    const desc = document.createElement('span');
-    desc.className = 'list-item-description';
-    desc.textContent = item.description;
-    descRow.appendChild(desc);
+  if (item.year) {
+    const yearEl = document.createElement('span');
+    yearEl.className = 'list-item-year';
+    yearEl.textContent = item.year;
+    metaRow.appendChild(yearEl);
   }
 
-  const displayTags = (item.tags || []).filter(t => t !== 'selected');
-  displayTags.forEach(tag => {
+  (item.tags || []).forEach(tag => {
     const pill = document.createElement('span');
     pill.className = 'list-item-tag-pill';
     pill.setAttribute('data-tag', tag);
     pill.textContent = tag;
-    descRow.appendChild(pill);
+    metaRow.appendChild(pill);
   });
 
-  if (descRow.hasChildNodes()) listItem.appendChild(descRow);
+  listItem.appendChild(metaRow);
+
+  const titleLine = document.createElement('div');
+  titleLine.className = 'list-item-title';
+  titleLine.textContent = item.title;
+  listItem.appendChild(titleLine);
 
 
   listItem.addEventListener('mouseenter', () => {
@@ -633,40 +610,54 @@ function createListItemEl(item) {
 
   listItem.addEventListener('mouseleave', () => {
     resumeGlobalSlideshow();
+    hidePreviewDescription();
+    hideTooltip();
   });
+
+  if (item.description) {
+    listItem.addEventListener('mouseenter', () => {
+      showPreviewDescription(item.description);
+      showTooltip(item.description, listItem);
+    });
+  }
 
   return listItem;
 }
 
 
-function initTooltipsForListItems() {
-  const tooltip = document.querySelector('.tooltip-content');
-  const listItems = document.querySelectorAll('.list-item[data-description]');
-  
-  listItems.forEach(trigger => {
-    const description = trigger.getAttribute('data-description');
-    if (!description) return;
-    
-    trigger.addEventListener('mouseenter', (e) => {
-      if (tooltip) {
-        tooltip.textContent = description;
-        tooltip.style.opacity = '1';
-      }
-    });
-    
-    trigger.addEventListener('mousemove', (e) => {
-      if (tooltip) {
-        tooltip.style.left = (e.clientX + 10) + 'px';
-        tooltip.style.top = (e.clientY + 10) + 'px';
-      }
-    });
-    
-    trigger.addEventListener('mouseleave', () => {
-      if (tooltip) {
-        tooltip.style.opacity = '0';
-      }
-    });
-  });
+// --- Option A: description below image in preview panel ---
+function showPreviewDescription(text) {
+  const el = document.getElementById('preview-description');
+  if (!el) return;
+  el.textContent = text;
+  el.style.opacity = '1';
+}
+
+function hidePreviewDescription() {
+  const el = document.getElementById('preview-description');
+  if (!el) return;
+  el.style.opacity = '0';
+}
+
+// --- Option B: tooltip near cursor ---
+let tooltipEl = null;
+
+function showTooltip(text, triggerEl) {
+  if (!tooltipEl) {
+    tooltipEl = document.createElement('div');
+    tooltipEl.className = 'list-tooltip';
+    document.body.appendChild(tooltipEl);
+  }
+  tooltipEl.textContent = text;
+  tooltipEl.style.opacity = '1';
+
+  const rect = triggerEl.getBoundingClientRect();
+  tooltipEl.style.left = (rect.left) + 'px';
+  tooltipEl.style.top = (rect.bottom + 8) + 'px';
+}
+
+function hideTooltip() {
+  if (tooltipEl) tooltipEl.style.opacity = '0';
 }
 
 function initModal() {
@@ -732,8 +723,19 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
+let galleryFilter = 'all';
+
+function sortItems(items) {
+  return [...items].sort((a, b) => {
+    const aSelected = a.tags && a.tags.includes('selected') ? 1 : 0;
+    const bSelected = b.tags && b.tags.includes('selected') ? 1 : 0;
+    if (bSelected !== aSelected) return bSelected - aSelected;
+    return new Date(b.date) - new Date(a.date);
+  });
+}
+
 function initGalleryView() {
-  buildCombinedGallery();
+  buildFilteredGallery('all');
 
   const mainNavItems = document.querySelectorAll('.main-nav .nav-item');
   mainNavItems.forEach(item => {
@@ -744,47 +746,35 @@ function initGalleryView() {
       if (!filter) return;
       mainNavItems.forEach(n => n.classList.remove('active'));
       item.classList.add('active');
-      scrollToGallerySection(filter);
+
+      if (filter === 'about') {
+        scrollToGalleryAbout();
+        return;
+      }
+
+      galleryFilter = filter;
+      buildFilteredGallery(filter);
     });
   });
 }
 
-function buildCombinedGallery() {
+function buildFilteredGallery(filter) {
   const galleryContent = document.querySelector('.gallery-view-content');
   if (!galleryContent) return;
 
   galleryContent.innerHTML = '';
 
-  const sections = [
-    { label: 'Selected', filter: 'selected' },
-    { label: 'Projects', filter: 'projects' },
-    { label: 'Updates', filter: 'updates' },
-    { label: 'Teaching', filter: 'teaching' },
-  ];
+  const nonAbout = allItems.filter(item => !(item.tags && item.tags.includes('about')));
+  const pool = filter === 'all' ? nonAbout : nonAbout.filter(item => item.tags && item.tags.includes(filter));
+  const items = sortItems(pool);
 
-  sections.forEach(section => {
-    const items = allItems.filter(item => item.tags && item.tags.includes(section.filter));
-    if (items.length === 0) return;
+  const grid = document.createElement('div');
+  grid.className = 'items-grid';
+  grid.style.opacity = '1';
+  items.forEach(item => grid.appendChild(buildGalleryCard(item)));
+  galleryContent.appendChild(grid);
 
-    const sectionEl = document.createElement('div');
-    sectionEl.className = 'gallery-section';
-    sectionEl.id = `gallery-section-${section.filter}`;
-
-    const header = document.createElement('h2');
-    header.className = 'gallery-section-header';
-    header.textContent = section.label;
-    sectionEl.appendChild(header);
-
-    const grid = document.createElement('div');
-    grid.className = 'items-grid';
-    grid.style.opacity = '1';
-
-    items.forEach(item => grid.appendChild(buildGalleryCard(item)));
-    sectionEl.appendChild(grid);
-    galleryContent.appendChild(sectionEl);
-  });
-
-  // About section
+  // About always at bottom
   const aboutSectionEl = document.createElement('div');
   aboutSectionEl.className = 'gallery-section';
   aboutSectionEl.id = 'gallery-section-about';
@@ -808,6 +798,20 @@ function buildCombinedGallery() {
       if (itemDetail) aboutBody.innerHTML = itemDetail.outerHTML;
     })
     .catch(() => {});
+}
+
+function scrollToGalleryAbout() {
+  const sectionEl = document.getElementById('gallery-section-about');
+  if (!sectionEl) return;
+  const headerHeight = (document.querySelector('.site-header') || {}).offsetHeight || 0;
+  const top = sectionEl.getBoundingClientRect().top + window.scrollY - headerHeight - 16;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
+function scrollToListAbout() {
+  const sectionEl = document.getElementById('list-section-about');
+  if (!sectionEl) return;
+  sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function buildGalleryCard(item) {
@@ -853,7 +857,7 @@ function buildGalleryCard(item) {
       imagesDiv.appendChild(img);
     }
     card.appendChild(imagesDiv);
-  } else if (item.link && !item.linkExternal) {
+  } else if (item.link) {
     const previewDiv = document.createElement('div');
     previewDiv.className = 'item-link-preview';
     const iframe = document.createElement('iframe');
@@ -891,15 +895,23 @@ function buildGalleryCard(item) {
     hoverContent.appendChild(hoverDesc);
   }
 
-  const hoverTags = document.createElement('div');
-  hoverTags.className = 'hover-tags';
+  const hoverMeta = document.createElement('div');
+  hoverMeta.className = 'hover-tags';
+
+  if (item.year) {
+    const yearEl = document.createElement('span');
+    yearEl.className = 'hover-tag-pill hover-year';
+    yearEl.textContent = item.year;
+    hoverMeta.appendChild(yearEl);
+  }
+
   (item.tags || []).forEach(tag => {
     const tagPill = document.createElement('span');
     tagPill.className = 'hover-tag-pill';
     tagPill.textContent = tag;
-    hoverTags.appendChild(tagPill);
+    hoverMeta.appendChild(tagPill);
   });
-  hoverContent.appendChild(hoverTags);
+  hoverContent.appendChild(hoverMeta);
   overlay.appendChild(hoverContent);
   card.appendChild(overlay);
 

@@ -31,8 +31,8 @@
 
   <nav class="main-nav">
     <div class="nav-items">
-      <a href="{{ environment.baseUrl }}/" class="nav-item{% if page.url == '/' %} active{% endif %}" data-filter="selected">
-        <span class="nav-text">Selected</span>
+      <a href="{{ environment.baseUrl }}/" class="nav-item{% if page.url == '/' %} active{% endif %}" data-filter="all">
+        <span class="nav-text">All</span>
       </a>
       <a href="{{ environment.baseUrl }}/projects/" class="nav-item{% if '/projects/' in page.url %} active{% endif %}" data-filter="projects">
         <span class="nav-text">Projects</span>
@@ -58,7 +58,7 @@
         <div class="list-sidebar">
           <nav class="list-nav">
             <div class="nav-items">
-              <a href="{{ environment.baseUrl }}/" class="nav-item" data-filter="selected">Selected</a>
+              <a href="{{ environment.baseUrl }}/" class="nav-item" data-filter="all">All</a>
               <a href="{{ environment.baseUrl }}/projects/" class="nav-item" data-filter="projects">Projects</a>
               <a href="{{ environment.baseUrl }}/updates/" class="nav-item" data-filter="updates">Updates</a>
               <a href="{{ environment.baseUrl }}/teaching/" class="nav-item" data-filter="teaching">Teaching</a>
@@ -73,6 +73,7 @@
           <div class="preview-carousel" id="preview-carousel">
             <!-- Carousel images will be populated by JavaScript -->
           </div>
+          <div class="preview-description" id="preview-description"></div>
         </div>
       </div>
     </div>
@@ -120,6 +121,8 @@
         {% for item in collections.allItems %}
         {
           title: {{ item.data.title | dump | safe }},
+          date: {{ item.data.date | dump | safe }},
+          year: "{{ item.data.date | dump | safe | replace('"', '') | truncate(4, false, '') }}",
           tags: {{ item.data.tags | dump | safe }},
           description: {{ item.data.shortDescription | dump | safe }},
           url: "{{ environment.baseUrl }}{{ item.url }}",

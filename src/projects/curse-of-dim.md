@@ -3,7 +3,7 @@ title: "The Curse of Dimensionality - Biennale Architettura 2025"
 shortDescription: "A short data-visualization film about predictive models of risk."
 date: 2025-04-15
 team: ["Adeline Chum", "Michael Krisch", "Laura Kurgan", "Adam Vosburgh", "Jia Zhang"]
-tags: ["selected", "projects"]
+tags: ["projects"]
 images:
   - "/images/curse-of-dim/installation-pic.jpg"
   - "/images/curse-of-dim/still-danger.jpg"

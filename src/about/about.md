@@ -1,7 +1,7 @@
 ---
 title: 
 shortDescription: 
-date: 2025-08-18
+date:  
 team: []
 tags: ["about"]
 layout: "item.njk"
