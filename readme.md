@@ -23,7 +23,7 @@ I also increasingly really do not enjoy sharing things on social media. The incl
 
 To help the site not become cluttered by additional content: I added a "Main" feed, that pulls from posts in other feeds (projects, teaching, updates). The thinking is that I won't feel deterred to add small updates to the site, given that I can always control what shows first seperately.
 
-Also added in a size variable on all posts frontmatter. This only appears on gallery view, but kind of denotes relative importance of a project. That view employs a masonry gird that fits in the different sizes of content, okay-ish. It's something that could be improved upon.
+Also added in a size variable on all posts frontmatter. This only appears on gallery view, but kind of denotes relative importance of a project. That view employs a masonry gird that fits in the different sizes of content, okay-ish. It 's something that could be improved upon.
 
 **To do**
 - I do not have any interactive work hosted here yet - will need to test how well an iframe works for this, and decide if I need to always link out, or build some seperate functionality for interactive portions of the site.
