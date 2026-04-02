@@ -36,7 +36,7 @@ module.exports = function(eleventyConfig) {
   
   eleventyConfig.addCollection("mainItems", function(collectionApi) {
     return collectionApi.getFilteredByGlob(contentGlob)
-      .filter(item => item.data.tags && item.data.tags.includes('main'))
+      .filter(item => item.data.tags && item.data.tags.includes('selected'))
       .sort((a, b) => new Date(b.data.date) - new Date(a.data.date)); // Most recent first
   });
   

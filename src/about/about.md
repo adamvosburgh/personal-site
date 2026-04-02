@@ -1,5 +1,5 @@
 ---
-title: "About Me"
+title: 
 shortDescription: 
 date: 2025-08-18
 team: []
@@ -9,12 +9,12 @@ size: 2
 permalink: "/about-me/"
 ---
 
-Currently I am the Associate Director of the [MS Computational Design Practices](https://www.arch.columbia.edu/programs/15-m-s-computational-design-practices) program, and an Adjunct Assistant Professor at Columbia's Graduate School of Architecture Planning and Preservation. <br> <br>
+I am a computational designer and educator. Currently I am the Associate Director of the [MS Computational Design Practices](https://www.arch.columbia.edu/programs/15-m-s-computational-design-practices) program and an Adjunct Assistant Professor at Columbia GSAPP. <br> <br>
 
-If you ask me what my discipline is, I would probably say that I am a designer that works with technology a lot. More specifically, I would say my research practice focuses around simulation as a form of representation, and the critical use of geospatial data to describe the built environment. <br> <br>
+My work uses data, simulation, and computation to make visible the systems that shape the built environment. In recent projects, that includes tracking [anthropogenic land use over time], how predictive models reframe conflict, and how microbiomes relate to urbanization. My recent teaching has explored LLMs as tools for spatial representation and mapmaking. I often collaborate with the [Center for Spatial Research](https://c4sr.columbia.edu/).<br> <br>
 
-I received my Master of Architecture h from Columbia GSAPP with the Honor Award for Design and Visualization, and my B.A. in Architecture and Japanese language studies from UNC Charlotte. <br> <br>
+I have exhibited at MoMA, the Venice Architecture Biennale (2025, 2021), the 2025 Milano Triennale, and the Fondation Cartier. My work is in the permanent collections of MoMA and the Fondation Cartier. <br> <br>
 
-I used to work as an architect, at SANAA in Tokyo, and Office for Metropolitan Architecture in New York. <br> <br>
+Previously I worked as an architect at SANAA in Tokyo and OMA in New York. I hold a Master of Architecture from Columbia GSAPP (Honor Award for Design and Visualization) and a B.A. in Architecture and Japanese from UNC Charlotte. <br> <br>
 
-Feel free to get in touch at adam dot vosburgh at gmail dot com.
+Open to collaborations — feel free to get in touch at adam dot vosburgh at columbia dot edu.

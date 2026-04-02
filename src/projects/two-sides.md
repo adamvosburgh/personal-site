@@ -3,7 +3,7 @@ title: "Two Sides of the Same Coin - Triennale Milano"
 shortDescription: "A data visualization that explores the interdependent relationship between humans, bacteria, and the built environment."
 date: 2025-05-15
 team: ["Laura Kurgan", "Dan Miller", "Adam Vosburgh"]
-tags: ["main", "projects"]
+tags: ["selected", "projects"]
 images:
   - "/images/two-sides/anthrome-cover.jpg"
   - "/images/two-sides/biome-cover.jpg"

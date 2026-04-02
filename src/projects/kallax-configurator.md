@@ -3,7 +3,7 @@ title: "Kallax Configurator"
 shortDescription: "A tool to design and print assembly instructions for modular shelving, using the IKEA Kallax module."
 date: 2025-10-01
 team: ["Adam Vosburgh"]
-tags: ["main", "projects"]
+tags: ["projects"]
 images:
   - "/images/kallax-configurator/InterfaceScreenshot.png"
   - "/images/kallax-configurator/InstructionGuysScreenshot.png"

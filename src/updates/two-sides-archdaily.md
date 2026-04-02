@@ -3,7 +3,7 @@ title: "'Two Sides of the Same Coin' wins Bee Award for Best Original Project [A
 shortDescription: "We won an award!"
 date: 2025-05-16
 team: ["Adam Vosburgh"]
-tags: ["main", "updates"]
+tags: ["updates"]
 images: 
 display:
   coverImage: "/images/two-sides/two-sides-arch-daily.png"

@@ -1,9 +1,9 @@
 ---
 title: "Methods in Spatial Research"
 shortDescription: "Seminar taught in Columbia GSAPP's Computation Sequence."
-date: 2025-03-31
+date: 2026-03-31
 team: ["Adam Vosburgh"]
-tags: ["main","teaching"]
+tags: ["selected","teaching"]
 feedImages: 
 images:
 coverImage: /images/methods/methods.png
