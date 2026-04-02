@@ -123,14 +123,14 @@
           tags: {{ item.data.tags | dump | safe }},
           description: {{ item.data.shortDescription | dump | safe }},
           url: "{{ environment.baseUrl }}{{ item.url }}",
-          coverImage: {% if item.data.display and item.data.display.coverImage %}"{{ environment.baseUrl }}{{ item.data.display.coverImage }}"{% elif item.data.coverImage %}"{{ environment.baseUrl }}{{ item.data.coverImage }}"{% else %}""{% endif %},
+          coverImage: {% if item.data.display and item.data.display.coverImage %}"{{ environment.baseUrl }}{{ item.data.display.coverImage | optimizedImageUrl }}"{% elif item.data.coverImage %}"{{ environment.baseUrl }}{{ item.data.coverImage | optimizedImageUrl }}"{% else %}""{% endif %},
           link: {% if item.data.link %}"{{ item.data.link }}"{% else %}""{% endif %},
           linkExternal: {% if item.data.linkExternal %}{{ item.data.linkExternal }}{% else %}false{% endif %},
           size: {{ item.data.size | dump | safe }},
           showInSlideshow: {% if item.data.display and item.data.display.showInSlideshow %}{{ item.data.display.showInSlideshow }}{% else %}false{% endif %},
           slideshowImages: [
             {% if item.data.display and item.data.display.slideshowImages %}
-              {% for img in item.data.display.slideshowImages %}"{{ environment.baseUrl }}{{ img }}"{% if not loop.last %},{% endif %}{% endfor %}
+              {% for img in item.data.display.slideshowImages %}"{{ environment.baseUrl }}{{ img | optimizedImageUrl }}"{% if not loop.last %},{% endif %}{% endfor %}
             {% endif %}
           ],
           slideshowLinks: [

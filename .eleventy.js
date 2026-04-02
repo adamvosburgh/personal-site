@@ -60,38 +60,71 @@ module.exports = function(eleventyConfig) {
       .sort((a, b) => new Date(b.data.date) - new Date(a.data.date)); // Most recent first
   });
 
-  // Media shortcode with support for images and videos
-  eleventyConfig.addShortcode("safeImage", function(src, alt) {
+  // Convert a /images/... web path to its optimized /images-opt/... WebP path
+  function optimizedWebPath(imgWebPath) {
+    const path = require('path');
+    const ext = path.extname(imgWebPath).toLowerCase();
+    if (['.mp4', '.webm', '.mov', '.gif'].includes(ext)) return imgWebPath;
+    // "/images/two-sides/interactive/1-biomes.png" -> "two-sides-interactive-1-biomes.webp"
+    const relative = imgWebPath.replace(/^\/images\//, '');
+    const name = relative.replace(/\//g, '-').replace(/\.[^.]+$/, '');
+    return `/images-opt/${name}.webp`;
+  }
+
+  eleventyConfig.addFilter("optimizedImageUrl", function(imgWebPath) {
+    if (!imgWebPath) return "";
+    return optimizedWebPath(imgWebPath);
+  });
+
+  // Async shortcode — generates optimized WebP + fallback <picture> for images, passes videos through
+  eleventyConfig.addAsyncShortcode("safeImage", async function(src, alt) {
     const fs = require('fs');
     const path = require('path');
-    
-    if(alt === undefined) alt = "Image";
-    
+
+    if (alt === undefined) alt = "Image";
+
+    const ext = path.extname(src).toLowerCase();
+
+    // Videos: pass through unchanged
+    if (['.mp4', '.webm', '.mov'].includes(ext)) {
+      const webPath = pathPrefix + src.replace('./src/', '/').replace('src/', '/');
+      return `<video class="carousel-image" autoplay muted loop playsinline>
+        <source src="${webPath}" type="video/${ext.substring(1)}">
+      </video>`;
+    }
+
+    // GIFs: pass through unchanged (eleventy-img loses animation)
+    if (ext === '.gif') {
+      const webPath = pathPrefix + src.replace('./src/', '/').replace('src/', '/');
+      return `<img src="${webPath}" alt="${alt}" class="carousel-image" loading="lazy">`;
+    }
+
+    if (!fs.existsSync(path.resolve(src))) {
+      return `<div class="image-placeholder"><span>Missing: ${path.basename(src)}</span></div>`;
+    }
+
     try {
-      if (fs.existsSync(path.resolve(src))) {
-        const webPath = src.replace('./src/', '/').replace('src/', '/');
-        const finalPath = pathPrefix + webPath;
-        const ext = path.extname(src).toLowerCase();
-        
-        // Handle video files
-        if (ext === '.mp4' || ext === '.webm' || ext === '.mov') {
-          return `<video class="carousel-image" autoplay muted loop playsinline>
-            <source src="${finalPath}" type="video/${ext.substring(1)}">
-            Your browser does not support the video tag.
-          </video>`;
-        }
-        
-        // Handle image files
-        return `<img src="${finalPath}" alt="${alt}" class="carousel-image" loading="lazy">`;
-      } else {
-        return `<div class="image-placeholder">
-          <span>Missing: ${path.basename(src)}</span>
-        </div>`;
-      }
-    } catch (error) {
-      return `<div class="image-placeholder">
-        <span>Error loading media</span>
-      </div>`;
+      const fallbackFormat = ext === '.png' ? 'png' : 'jpeg';
+      const relative = src.replace('./src/images/', '').replace('src/images/', '');
+      const name = relative.replace(/\//g, '-').replace(/\.[^.]+$/, '');
+
+      const metadata = await Image(src, {
+        widths: [null],
+        formats: ['webp', fallbackFormat],
+        outputDir: './_site/images-opt/',
+        urlPath: '/images-opt/',
+        filenameFormat: (_id, _src, _width, format) => `${name}.${format}`
+      });
+
+      return Image.generateHTML(metadata, {
+        alt,
+        class: 'carousel-image',
+        loading: 'lazy',
+        decoding: 'async'
+      });
+    } catch (e) {
+      const webPath = pathPrefix + src.replace('./src/', '/').replace('src/', '/');
+      return `<img src="${webPath}" alt="${alt}" class="carousel-image" loading="lazy">`;
     }
   });
 
