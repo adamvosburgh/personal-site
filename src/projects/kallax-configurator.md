@@ -13,9 +13,9 @@ images:
 display:
   coverImage: "/images/kallax-configurator/MiniRecording-1080.mp4"      
   slideshowImages:                               
-  showInSlideshow: false    
+  showInSlideshow: true    
 layout: "item.njk"
-size: 2
+size: 1
 link: https://adamvosburgh.github.io/kallax-configurator/
 linkExternal: true
 ---

@@ -14,7 +14,7 @@ display:
   coverImage: "/images/two-sides/interactive/4-anthromes.png"
   slideshowImages: 
   - "/images/two-sides/interactive/1-biomes.png"
-  showInSlideshow: true
+  showInSlideshow: false
 layout: "item.njk"
 size: 2
 link: https://twosides.earth

@@ -6,7 +6,9 @@
     "build": "eleventy",
     "serve": "eleventy --serve",
     "dev": "eleventy --serve --watch",
-    "debug": "DEBUG=* eleventy"
+    "debug": "DEBUG=* eleventy",
+    "optimize": "node utilities/optimize-media.js",
+    "optimize:apply": "node utilities/optimize-media.js --apply"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",

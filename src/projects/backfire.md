@@ -11,7 +11,7 @@ display:
   slideshowImages:
   showInSlideshow: false
 layout: "item.njk"
-size: 2
+size: 1
 link: https://vimeo.com/571725600
 linkExternal: true
 ---

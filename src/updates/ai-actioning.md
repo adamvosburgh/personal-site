@@ -5,7 +5,7 @@ date: 2024-11-01
 team: ["Adam Vosburgh", "Laura Kurgan"]
 tags: ["updates", "teaching"]
 images: 
-  - "/images/ai-actioning-summit/AS 3 - ig 1.jpg"
+  - "/images/ai-actioning-summit/AS3-ig1.jpg"
   - "/images/ai-actioning-summit/AS 3 - ig 2.jpg"
   - "/images/ai-actioning-summit/AS 3 - ig 3.jpg"
 display:
