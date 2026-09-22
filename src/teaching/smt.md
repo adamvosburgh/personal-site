@@ -12,7 +12,7 @@ display:
   showInSlideshow: true
 layout: "item.njk"
 size: 2
-link:
+link: https://simmodeltwin.net/
 linkExternal: true
 ---
 
